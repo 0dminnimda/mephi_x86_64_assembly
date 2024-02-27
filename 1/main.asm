@@ -8,44 +8,44 @@ segment readable executable
 entry main
 main:
     print_str enter_number_a, enter_number_a_length
-    call read_int
+    call read_signed_int
     mov [number_a], rax
 
     print_str enter_number_b, enter_number_b_length
-    call read_int
+    call read_signed_int
     mov [number_b], eax
 
     print_str enter_number_c, enter_number_c_length
-    call read_int
+    call read_signed_int
     mov [number_c], eax
 
     print_str enter_number_d, enter_number_d_length
-    call read_int
+    call read_signed_int
     mov [number_d], al
 
     print_str enter_number_e, enter_number_e_length
-    call read_int
+    call read_signed_int
     mov [number_e], ax
 
     print_str debug_str, debug_str_length
     mov rax, [number_a]
-    call print_int
+    call print_signed_int
 
     print_str debug_str, debug_str_length
     movsxd rax, [number_b]
-    call print_int
+    call print_signed_int
 
     print_str debug_str, debug_str_length
     movsxd rax, [number_c]
-    call print_int
+    call print_signed_int
 
     print_str debug_str, debug_str_length
     movsx rax, [number_d]
-    call print_int
+    call print_signed_int
 
     print_str debug_str, debug_str_length
     movsx rax, [number_e]
-    call print_int
+    call print_signed_int
 
     exit 0
 
