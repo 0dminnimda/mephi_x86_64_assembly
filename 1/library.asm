@@ -123,6 +123,20 @@ print_signed_int:  ; rax number input
     ret
 
 
+read_signed_int:  ; rax number output
+    push rdi rsi
+
+    input _library_buff, _library_buff_length
+
+    lea rdi, [_library_buff]
+    mov rsi, rax
+    call signed_int_from_string
+
+    pop rsi rdi
+
+    ret
+
+
 read_int:  ; rax number output
     push rdi rsi
 
@@ -133,6 +147,65 @@ read_int:  ; rax number output
     call int_from_string
 
     pop rsi rdi
+
+    ret
+
+
+signed_int_from_string:  ; rdi buff, rsi buff_length, returns rax number
+    push rsi rdi r8
+
+    mov r8, 0  ; signed
+
+    push rbx rcx
+
+  signed_int_from_string_loop:
+    test rsi, rsi
+    jz signed_int_from_string_loop_end
+    dec rsi
+
+    movzx rbx, byte [rdi]
+    inc rdi
+
+    cmp rbx, 0
+    je signed_int_from_string_loop
+
+    cmp rbx, endl
+    je signed_int_from_string_loop
+
+    cmp rbx, ' '
+    je signed_int_from_string_loop
+
+    cmp rbx, '+'
+    je signed_int_from_string_loop
+
+    cmp rbx, '-'
+    jne signed_int_from_string_loop_end_step_back
+
+    xor r8, 1
+
+    jmp signed_int_from_string_loop
+
+  signed_int_from_string_loop_end_step_back:
+
+    inc rsi
+    dec rdi
+
+  signed_int_from_string_loop_end:
+
+    pop rcx rbx
+
+    call int_from_string
+
+    and rax, [_library_all_except_last_bit_mask]  ; clear sign bit
+
+    test r8, r8
+    jz signed_int_from_string_not_signed
+
+    negate_2s_complement rax
+
+  signed_int_from_string_not_signed:
+
+    pop r8 rdi rsi
 
     ret
 
@@ -290,6 +363,7 @@ segment readable writable
     _library_buff_length = $-_library_buff
 
     _library_number_string_buffer rb 32
+    _library_all_except_last_bit_mask dq 0x7FFFFFFFFFFFFFFF
 
     _library_minus db '-'
     _library_minus_length = $-_library_minus
