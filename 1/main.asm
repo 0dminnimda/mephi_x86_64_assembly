@@ -27,6 +27,26 @@ main:
     call read_int
     mov [number_e], ax
 
+    print_str debug_str, debug_str_length
+    mov rax, [number_a]
+    call print_int
+
+    print_str debug_str, debug_str_length
+    movsxd rax, [number_b]
+    call print_int
+
+    print_str debug_str, debug_str_length
+    movsxd rax, [number_c]
+    call print_int
+
+    print_str debug_str, debug_str_length
+    movsx rax, [number_d]
+    call print_int
+
+    print_str debug_str, debug_str_length
+    movsx rax, [number_e]
+    call print_int
+
     exit 0
 
 
@@ -48,6 +68,9 @@ segment readable writable
 
     calculation_result db 'Calculation result ((a^3 + b^3)/(a^2 * c - b^2 * d + e)): '
     calculation_result_length = $-calculation_result
+
+    debug_str db 'DEBUG: '
+    debug_str_length = $-debug_str
 
     number_a dq 0
     number_b dd 0
