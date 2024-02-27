@@ -150,6 +150,8 @@ int_from_string:  ; rdi buff, rsi buff_length, returns rax number
     push rbx rcx
 
   int_from_string_read_one_digit:
+    test rsi, rsi
+    jz int_from_string_end_reading
     dec rsi
 
     movzx rbx, byte [rdi + rsi]
@@ -168,8 +170,7 @@ int_from_string:  ; rdi buff, rsi buff_length, returns rax number
     add rax, rbx
     imul rcx, 10
 
-    cmp rsi, 0
-    jne int_from_string_read_one_digit
+    jmp int_from_string_read_one_digit
 
   int_from_string_end_reading:
     pop rcx rbx
