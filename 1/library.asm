@@ -79,7 +79,7 @@ macro print_str buffer, length
 macro is_positive thing, target
 {
     test thing, thing
-    jg target
+    jge target
 }
 
 
