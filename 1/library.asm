@@ -1,4 +1,4 @@
-macro do_syscall sys_call_number
+macro do_syscall sys_call_number  ; r10 and r11 can be overriden!!!
 {
     mov rax, sys_call_number
     syscall
@@ -54,25 +54,25 @@ endl = 10
 
 macro exit code
 {
-    push rax rsi
+    push rax rsi r10 r11
     syscall1 sys_exit, code
-    pop rsi rax
+    pop r11 r10 rsi rax
 }
 
 
 macro input buffer, length  ; rax output length
 {
-    push rdi rsi rdx
+    push rdi rsi rdx r10 r11
     syscall3 sys_read, stdin, buffer, length
-    pop rdx rsi rdi
+    pop r11 r10 rdx rsi rdi
 }
 
 
 macro print_str buffer, length
 {
-    push rax rdi rsi rdx
+    push rax rdi rsi rdx r10 r11
     syscall3 sys_write, stdout, buffer, length
-    pop rdx rsi rdi rax
+    pop r11 r10 rdx rsi rdi rax
 }
 
 
