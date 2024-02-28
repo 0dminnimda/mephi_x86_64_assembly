@@ -196,7 +196,7 @@ signed_int_from_string:  ; rdi buff, rsi buff_length, returns rax number
 
     call int_from_string
 
-    and rax, [_library_all_except_last_bit_mask]  ; clear sign bit
+    and rax, [_library_64bit_non_sign_bits]  ; clear sign bit
 
     test r8, r8
     jz signed_int_from_string_not_signed
@@ -363,7 +363,7 @@ segment readable writable
     _library_buff_length = $-_library_buff
 
     _library_number_string_buffer rb 32
-    _library_all_except_last_bit_mask dq 0x7FFFFFFFFFFFFFFF
+    _library_64bit_non_sign_bits dq 0x7FFFFFFFFFFFFFFF
 
     _library_minus db '-'
     _library_minus_length = $-_library_minus
