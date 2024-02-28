@@ -76,6 +76,9 @@ compute_formula:  ; rax number have succeded output
 
     ret
 
+; all 1700000 - overflow
+; all 1600000 - no overflow
+
 
 entry main
 main:
