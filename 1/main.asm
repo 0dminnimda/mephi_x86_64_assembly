@@ -10,28 +10,36 @@ compute_formula:  ; rax number have succeded output
 
     mov rax, [number_a]
     imul rax
+    jo compute_formula_error_overflow
     mov r8, rax
     mov rbx, [number_a]
     imul rbx
+    jo compute_formula_error_overflow
     mov r10, rax
 
     movsxd rax, [number_b]
     imul rax
+    jo compute_formula_error_overflow
     mov r9, rax
     movsxd rbx, [number_b]
     imul rbx
+    jo compute_formula_error_overflow
     add r10, rax
+    jo compute_formula_error_overflow
 
     movsxd rax, [number_c]
     imul r8
+    jo compute_formula_error_overflow
     mov r11, rax
 
     movsx rax, [number_d]
     imul r9
+    jo compute_formula_error_overflow
     sub r11, rax
 
     movsx rax, [number_e]
     add r11, rax
+    jo compute_formula_error_overflow
 
     print_str debug_str, debug_str_length
     mov rax, r10
@@ -42,21 +50,25 @@ compute_formula:  ; rax number have succeded output
     call print_signed_int
 
     test r11, r11
-    jz compute_formula_error
+    jz compute_formula_error_division
 
     mov rax, r10  ; dividend
     cqo           ; sign extend rax to rdx:rax
     mov rcx, r11  ; divisor
     idiv rcx
-    jc compute_formula_error
 
     mov [number_result], rax
     mov rax, 0
     jmp compute_formula_ok
 
-  compute_formula_error:
+  compute_formula_error_overflow:
 
     mov rax, 1
+    jmp compute_formula_ok
+
+  compute_formula_error_division:
+
+    mov rax, 2
 
   compute_formula_ok:
 
@@ -94,7 +106,7 @@ main:
 
     print_str calculation_result_error, calculation_result_error_length
 
-    exit 1
+    exit rax
 
   main_ok:
 
