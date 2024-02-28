@@ -9,32 +9,42 @@ compute_formula:  ; rax number output
     push rcx rbx rdx r8 r9 r10 r11
 
     mov rax, [number_a]
-    mul rax
+    imul rax
     mov r8, rax
-    mul [number_a]
+    mov rbx, [number_a]
+    imul rbx
     mov r10, rax
 
-    movsxd rbx, [number_b]
-    mul ebx
+    movsxd rax, [number_b]
+    imul rax
     mov r9, rax
-    mul [number_b]
-    add r10, rbx
+    movsxd rbx, [number_b]
+    imul rbx
+    add r10, rax
 
     movsxd rax, [number_c]
-    mul r8
+    imul r8
     mov r11, rax
 
     movsx rax, [number_d]
-    mul r9
+    imul r9
     sub r11, rax
 
     movsx rax, [number_e]
     add r11, rax
 
-    mov rdx, 0    ; High order bits of the dividend
-    mov rax, r10  ; Low order bits of the dividend
-    mov rcx, r11  ; Divisor
-    div rcx
+    print_str debug_str, debug_str_length
+    mov rax, r10
+    call print_signed_int
+
+    print_str debug_str, debug_str_length
+    mov rax, r11
+    call print_signed_int
+
+    mov rax, r10  ; dividend
+    cqo           ; sign extend rax to rdx:rax
+    mov rcx, r11  ; divisor
+    idiv rcx
 
     pop r11 r10 r9 r8 rdx rbx rcx
 
@@ -62,26 +72,6 @@ main:
     print_str enter_number_e, enter_number_e_length
     call read_signed_int
     mov [number_e], ax
-
-    print_str debug_str, debug_str_length
-    mov rax, [number_a]
-    call print_signed_int
-
-    print_str debug_str, debug_str_length
-    movsxd rax, [number_b]
-    call print_signed_int
-
-    print_str debug_str, debug_str_length
-    movsxd rax, [number_c]
-    call print_signed_int
-
-    print_str debug_str, debug_str_length
-    movsx rax, [number_d]
-    call print_signed_int
-
-    print_str debug_str, debug_str_length
-    movsx rax, [number_e]
-    call print_signed_int
 
     call compute_formula
 
