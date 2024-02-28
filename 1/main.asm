@@ -5,7 +5,7 @@ include 'library.asm'
 segment readable executable
 
 
-compute_formula:  ; rax number output
+compute_formula:  ; rax number have succeded output
     push rcx rbx rdx r8 r9 r10 r11
 
     mov rax, [number_a]
@@ -41,10 +41,24 @@ compute_formula:  ; rax number output
     mov rax, r11
     call print_signed_int
 
+    test r11, r11
+    jz compute_formula_error
+
     mov rax, r10  ; dividend
     cqo           ; sign extend rax to rdx:rax
     mov rcx, r11  ; divisor
     idiv rcx
+    jc compute_formula_error
+
+    mov [number_result], rax
+    mov rax, 0
+    jmp compute_formula_ok
+
+  compute_formula_error:
+
+    mov rax, 1
+
+  compute_formula_ok:
 
     pop r11 r10 r9 r8 rdx rbx rcx
 
@@ -75,7 +89,17 @@ main:
 
     call compute_formula
 
+    test rax, rax
+    jz main_ok
+
+    print_str calculation_result_error, calculation_result_error_length
+
+    exit 1
+
+  main_ok:
+
     print_str calculation_result, calculation_result_length
+    mov rax, [number_result]
     call print_signed_int
 
     exit 0
@@ -100,6 +124,9 @@ segment readable writable
     calculation_result db 'Calculation result ((a^3 + b^3)/(a^2 * c - b^2 * d + e)): '
     calculation_result_length = $-calculation_result
 
+    calculation_result_error db 'Calculation resulted in error', endl
+    calculation_result_error_length = $-calculation_result_error
+
     debug_str db 'DEBUG: '
     debug_str_length = $-debug_str
 
@@ -108,5 +135,6 @@ segment readable writable
     number_c dd 0
     number_d db 0
     number_e dw 0
+    number_result dq 0
 
 ; display/i $pc
