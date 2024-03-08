@@ -13,10 +13,11 @@ main:
     mov rdi, buff
     mov rsi, rax
 
+    call move_to_number_start
     call int_from_string
     mov [len_1], rax
-    call move_to_number_start
 
+    call move_to_number_start
     call int_from_string
     mov [len_2], rax
 
