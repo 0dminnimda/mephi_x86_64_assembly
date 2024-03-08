@@ -118,6 +118,19 @@ print_int:  ; rax number input
     ret
 
 
+print_int_no_new_line:  ; rax number input
+    push rax rdi rsi
+
+    lea rdi, [_library_number_string_buffer]
+    call string_from_int
+
+    print_str _library_number_string_buffer, rsi
+
+    pop rsi rdi rax
+
+    ret
+
+
 print_signed_int:  ; rax number input
     push rax rdi rsi
 
@@ -126,6 +139,20 @@ print_signed_int:  ; rax number input
 
     mov [_library_number_string_buffer + rsi], endl
     inc rsi
+    print_str _library_number_string_buffer, rsi
+
+    pop rsi rdi rax
+
+    ret
+
+
+print_signed_int_no_new_line:  ; rax number input
+    push rax rdi rsi
+
+    lea rdi, [_library_number_string_buffer]
+
+    call string_from_signed_int
+
     print_str _library_number_string_buffer, rsi
 
     pop rsi rdi rax
