@@ -161,8 +161,8 @@ read_int:  ; rax number output
     ret
 
 
-signed_int_from_string:  ; rdi buff, rsi buff_length, returns rax number
-    push rsi rdi r8
+signed_int_from_string:  ; inout rdi buff, inout rsi buff_length, returns rax number
+    push r8
 
     mov r8, 0  ; signed
 
@@ -215,22 +215,103 @@ signed_int_from_string:  ; rdi buff, rsi buff_length, returns rax number
 
   signed_int_from_string_not_signed:
 
-    pop r8 rdi rsi
+    pop r8
 
     ret
 
 
-int_from_string:  ; rdi buff, rsi buff_length, returns rax number
-    push rsi
+find_number_start_offset_in_string:  ; in rdi buff, in rsi buff_length, out rax number_offset
+    push rsi rdi
+    mov rax, rsi
+
+    push rbx rcx
+
+  find_number_start_offset_in_string_loop:
+    test rsi, rsi
+    jz find_number_start_offset_in_string_loop_end
+    dec rsi
+
+    movzx rbx, byte [rdi]
+    inc rdi
+
+    jump_if_not_digit rbx, find_number_start_offset_in_string_loop
+
+  find_number_start_offset_in_string_loop_end_step_back:
+
+    inc rsi
+    dec rdi
+
+  find_number_start_offset_in_string_loop_end:
+
+    pop rcx rbx
+
+    sub rax, rsi
+    pop rdi rsi
+
+    ret
+
+
+move_to_number_start:  ; inout rdi buff, inout rsi buff_length
+    push rax
+
+    call find_number_start_offset_in_string
+    add rdi, rax
+    sub rsi, rax
+
+    pop rax
+
+    ret
+
+
+find_number_end_offset_in_string:  ; in rdi buff, in rsi buff_length, out rax number_offset
+    push rsi rdi
+    mov rax, rsi
+
+    push rbx rcx
+
+  find_number_end_offset_in_string_loop:
+    test rsi, rsi
+    jz find_number_end_offset_in_string_loop_end
+    dec rsi
+
+    movzx rbx, byte [rdi]
+    inc rdi
+
+    jump_if_not_digit rbx, find_number_end_offset_in_string_loop_end_step_back
+
+    jmp find_number_end_offset_in_string_loop
+
+  find_number_end_offset_in_string_loop_end_step_back:
+
+    inc rsi
+    dec rdi
+
+  find_number_end_offset_in_string_loop_end:
+
+    pop rcx rbx
+
+    sub rax, rsi
+    pop rdi rsi
+
+    ret
+
+
+int_from_string:  ; inout rdi buff, inout rsi buff_length, returns rax
+    push r8
+    push rdi rsi
+
+    call find_number_end_offset_in_string
+    push rax  ; number_offset
+    mov rsi, rax
 
     mov rax, 0  ; result
     ; rsi - counter
     mov rcx, 1  ; 10's powers
 
+    push rbx rcx
+
     cmp rsi, 0
     je int_from_string_end_reading
-
-    push rbx rcx
 
   int_from_string_read_one_digit:
     test rsi, rsi
@@ -238,8 +319,6 @@ int_from_string:  ; rdi buff, rsi buff_length, returns rax number
     dec rsi
 
     movzx rbx, byte [rdi + rsi]
-
-    jump_if_not_digit rbx, int_from_string_end_reading
 
     sub rbx, '0'
     imul rbx, rcx
@@ -251,7 +330,13 @@ int_from_string:  ; rdi buff, rsi buff_length, returns rax number
   int_from_string_end_reading:
     pop rcx rbx
 
-    pop rsi
+    pop r8  ; number_offset
+    pop rsi rdi
+
+    add rdi, r8
+    sub rsi, r8
+
+    pop r8
 
     ret
 
