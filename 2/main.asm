@@ -379,13 +379,9 @@ main:
     call print_matrix_size
 
     print_str new_line_str, new_line_str_length
-    mov rdi, matrix
-    call print_matrix
-
-    print_str new_line_str, new_line_str_length
     print_str enter_mat_str, enter_mat_str_length
-
     print_str new_line_str, new_line_str_length
+    mov rdi, matrix
     call read_matrix
 
     print_str new_line_str, new_line_str_length
@@ -475,8 +471,8 @@ segment readable writable
 
 
 ; 1 -2 3 -5
-; 6 -7 8 -9
 ; 9 23 84 9
+; 6 -7 8 -9
 ; -4 -6 -8 -2
 ; -7 -9 -3 -1
 
