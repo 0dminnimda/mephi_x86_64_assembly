@@ -68,9 +68,9 @@ macro input buffer, length  ; rax output length
 
 macro print_str buffer, length
 {
-    push rax rdi rsi rdx r10 r11
+    push rax rdi rsi rcx rdx r10 r11
     syscall3 sys_write, stdout, buffer, length
-    pop r11 r10 rdx rsi rdi rax
+    pop r11 r10 rdx rcx rsi rdi rax
 }
 
 
