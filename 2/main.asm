@@ -111,9 +111,37 @@ print_matrix:  ; in rdi matrix ptr
     ret
 
 
+get_row_max:  ; in rdi row ptr, out rax max
+    push rcx rdi
+
+    movzx rcx, [len_2]
+    mov rax, 0
+
+    test rcx, rcx
+    cmovnz rax, [rdi]
+
+  get_row_max_loop:
+
+    test rcx, rcx
+    jz get_row_max_end
+
+    cmp rax, [rdi]
+    cmovl rax, [rdi]
+
+    dec rcx
+    add rdi, 8
+    jmp get_row_max_loop
+
+  get_row_max_end:
+
+    pop rdi rcx
+
+    ret
+
+
 entry main
 main:
-    print_str enter_mat_size, enter_mat_size_length
+    print_str enter_mat_size_str, enter_mat_size_str_length
 
     call read_matrix_size
 
@@ -125,7 +153,7 @@ main:
     call print_matrix
 
     print_str new_line_str, new_line_str_length
-    print_str enter_mat, enter_mat_length
+    print_str enter_mat_str, enter_mat_str_length
 
     print_str new_line_str, new_line_str_length
     call read_matrix
@@ -133,15 +161,23 @@ main:
     print_str new_line_str, new_line_str_length
     call print_matrix
 
+    print_str new_line_str, new_line_str_length
+    call get_row_max
+    print_str row_maxes_str, row_maxes_str_length
+    call print_signed_int
+
     exit 0
 
 
 segment readable writable
-    enter_mat_size db 'Enter matrix size (width height): '
-    enter_mat_size_length = $-enter_mat_size
+    enter_mat_size_str db 'Enter matrix size (width height): '
+    enter_mat_size_str_length = $-enter_mat_size_str
 
-    enter_mat db 'Enter matrix: '
-    enter_mat_length = $-enter_mat
+    enter_mat_str db 'Enter matrix: '
+    enter_mat_str_length = $-enter_mat_str
+
+    row_maxes_str db 'Row maxes: '
+    row_maxes_str_length = $-row_maxes_str
 
     debug_str db 'DEBUG: '
     debug_str_length = $-debug_str
@@ -159,6 +195,8 @@ segment readable writable
     len_2 db 0
 
     matrix rq 256*256
+    matrix_row_max rq 256
+    matrix_rows rq 256
 
 
 ; display/i $pc
