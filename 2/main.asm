@@ -229,7 +229,11 @@ sort_maxes: ; inout rsi maxes_ptr
 
     mov r8, [rsi + rdx]
     cmp r8, [rsi + rdx - size_of_rows_maxes_n_ptrs]
+if defined REVERSED
+    jle sort_maxes_loop_inner_end
+else
     jge sort_maxes_loop_inner_end
+end if
 
     mov r8, [rsi + rdx]
     xchg r8, [rsi + rdx - size_of_rows_maxes_n_ptrs]
