@@ -6,6 +6,8 @@ segment readable executable
 
 
 read_matrix_size:
+    push rax rdi rsi
+
     input buff, buff_length
     mov rdi, buff
     mov rsi, buff_length
@@ -18,21 +20,29 @@ read_matrix_size:
     call int_from_string
     mov [len_2], al
 
+    pop rsi rdi rax
+
     ret
 
 
 print_matrix_size:
+    push rax
+
     movzx rax, [len_1]
     call print_int
 
     movzx rax, [len_2]
     call print_int
 
+    pop rax
+
     ret
 
 
-read_matrix:
-    mov r8, matrix  ; ptr to number from matrix
+read_matrix:  ; in rdi matrix ptr
+    push rdi rsi r8 r9 r10
+
+    mov r8, rdi
 
     movzx r9, [len_1]
   read_matrix_row:
@@ -61,11 +71,15 @@ read_matrix:
     jmp read_matrix_row
   read_matrix_row_end:
 
+    pop r10 r9 r8 rsi rdi
+
     ret
 
 
-print_matrix:
-    mov r8, matrix  ; ptr to number from matrix
+print_matrix:  ; in rdi matrix ptr
+    push r8 r9 r10
+
+    mov r8, rdi
 
     movzx r9, [len_1]
   print_matrix_row:
@@ -92,6 +106,8 @@ print_matrix:
     jmp print_matrix_row
   print_matrix_row_end:
 
+    pop r10 r9 r8
+
     ret
 
 
@@ -105,6 +121,7 @@ main:
     call print_matrix_size
 
     print_str new_line_str, new_line_str_length
+    mov rdi, matrix
     call print_matrix
 
     print_str new_line_str, new_line_str_length
