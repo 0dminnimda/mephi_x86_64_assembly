@@ -50,11 +50,14 @@ read_matrix:  ; in rdi matrix ptr
     jz read_matrix_row_end
     dec r9
 
+    movzx r10, [len_2]
+    test r10, r10
+    jz read_matrix_number_end
+
     input buff, buff_length
     mov rdi, buff
     mov rsi, buff_length
 
-    movzx r10, [len_2]
   read_matrix_number:
     test r10, r10
     jz read_matrix_number_end
