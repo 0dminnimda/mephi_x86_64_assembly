@@ -108,6 +108,9 @@ main:
     call print_matrix
 
     print_str new_line_str, new_line_str_length
+    print_str enter_mat, enter_mat_length
+
+    print_str new_line_str, new_line_str_length
     call read_matrix
 
     print_str new_line_str, new_line_str_length
@@ -119,6 +122,9 @@ main:
 segment readable writable
     enter_mat_size db 'Enter matrix size (width height): '
     enter_mat_size_length = $-enter_mat_size
+
+    enter_mat db 'Enter matrix: '
+    enter_mat_length = $-enter_mat
 
     debug_str db 'DEBUG: '
     debug_str_length = $-debug_str
