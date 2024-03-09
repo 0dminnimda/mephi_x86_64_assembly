@@ -14,11 +14,11 @@ read_matrix_size:
 
     call move_to_after_white_space
     call int_from_string
-    mov [len_1], al
+    mov [len_1], rax
 
     call move_to_after_white_space
     call int_from_string
-    mov [len_2], al
+    mov [len_2], rax
 
     pop rsi rdi rax
 
@@ -28,11 +28,11 @@ read_matrix_size:
 print_matrix_size:
     push rax
 
-    movzx rax, [len_1]
+    mov rax, [len_1]
     call print_int_no_new_line
     print_str space_str, space_str_length
 
-    movzx rax, [len_2]
+    mov rax, [len_2]
     call print_int
 
     pop rax
@@ -45,13 +45,13 @@ read_matrix:  ; in rdi matrix ptr
 
     mov r8, rdi
 
-    movzx r9, [len_1]
+    mov r9, [len_1]
   read_matrix_row:
     test r9, r9
     jz read_matrix_row_end
     dec r9
 
-    movzx r10, [len_2]
+    mov r10, [len_2]
     test r10, r10
     jz read_matrix_number_end
 
@@ -85,13 +85,13 @@ print_matrix:  ; in rdi matrix ptr
 
     mov r8, rdi
 
-    movzx r9, [len_1]
+    mov r9, [len_1]
   print_matrix_row:
     test r9, r9
     jz print_matrix_row_end
     dec r9
 
-    movzx r10, [len_2]
+    mov r10, [len_2]
   print_matrix_number:
     test r10, r10
     jz print_matrix_number_end
@@ -118,7 +118,7 @@ print_matrix:  ; in rdi matrix ptr
 get_row_max:  ; in rdi row ptr, out rax max
     push rcx rdi
 
-    movzx rcx, [len_2]
+    mov rcx, [len_2]
     mov rax, 0
 
     test rcx, rcx
@@ -146,8 +146,8 @@ get_row_max:  ; in rdi row ptr, out rax max
 get_rows_maxes:  ; in rdi matrix ptr, inout rsi maxes ptr
     push rax rcx rdx rdi rsi
 
-    movzx rcx, [len_1]
-    movzx rdx, [len_2]
+    mov rcx, [len_1]
+    mov rdx, [len_2]
 
   get_rows_maxes_loop:
 
@@ -158,7 +158,7 @@ get_rows_maxes:  ; in rdi matrix ptr, inout rsi maxes ptr
     mov [rsi], rax
 
     dec rcx
-    lea rsi, [rsi + 8]
+    add rsi, size_of_rows_maxes_n_ptrs
     lea rdi, [rdi + rdx*8]
 
     jmp get_rows_maxes_loop
@@ -173,7 +173,7 @@ get_rows_maxes:  ; in rdi matrix ptr, inout rsi maxes ptr
 print_rows_maxes:  ; in rsi maxes ptr
     push rax rcx rsi
 
-    movzx rcx, [len_1]
+    mov rcx, [len_1]
 
   print_rows_maxes_loop:
 
@@ -185,7 +185,7 @@ print_rows_maxes:  ; in rsi maxes ptr
     print_str space_str, space_str_length
 
     dec rcx
-    lea rsi, [rsi + 8]
+    add rsi, size_of_rows_maxes_n_ptrs
 
     jmp print_rows_maxes_loop
 
@@ -198,8 +198,67 @@ print_rows_maxes:  ; in rsi maxes ptr
     ret
 
 
+sort_maxes: ; inout rsi maxes_ptr
+    ; via insersion sort:
+    ; i = 1
+    ; while i < length(A)
+    ;     j = A + i
+    ;     while j > 0 and *(j) < *(j-1) {
+    ;         swap j and j-1
+    ;         j -= 1
+    ;     }
+    ;     i += 1
+    ; }
+
+    push rax rcx rsi r8
+
+    mov rcx, 1
+
+  sort_maxes_loop:
+
+    cmp rcx, [len_1]
+    jge sort_maxes_loop_end
+
+    mov rdx, rcx
+    shl rdx, 4  ; rdx * size_of_rows_maxes_n_ptrs
+
+  sort_maxes_loop_inner:
+
+    test rdx, rdx
+    jz sort_maxes_loop_inner_end
+
+    mov r8, [rsi + rdx]
+    cmp r8, [rsi + rdx - size_of_rows_maxes_n_ptrs]
+    jge sort_maxes_loop_inner_end
+
+    mov r8, [rsi + rdx]
+    xchg r8, [rsi + rdx - size_of_rows_maxes_n_ptrs]
+    xchg [rsi + rdx], r8
+
+    mov r8, [rsi + rdx + size_of_rows_maxes_n_ptrs / 2]
+    xchg r8, [rsi + rdx - size_of_rows_maxes_n_ptrs + size_of_rows_maxes_n_ptrs / 2]
+    xchg [rsi + rdx + size_of_rows_maxes_n_ptrs / 2], r8
+
+    sub rdx, size_of_rows_maxes_n_ptrs
+
+    jmp sort_maxes_loop_inner
+
+  sort_maxes_loop_inner_end:
+
+    inc rcx
+
+    jmp sort_maxes_loop
+
+  sort_maxes_loop_end:
+
+    pop r8 rsi rcx rax
+
+    ret
+
+
 entry main
 main:
+
     print_str enter_mat_size_str, enter_mat_size_str_length
 
     call read_matrix_size
@@ -225,8 +284,16 @@ main:
     print_str new_line_str, new_line_str_length
     print_str rows_maxes_str, rows_maxes_str_length
     print_str new_line_str, new_line_str_length
-    mov rsi, matrix_rows_maxes
+    mov rsi, matrix_rows_maxes_n_ptrs
     call get_rows_maxes
+    call print_rows_maxes
+
+    
+
+    print_str new_line_str, new_line_str_length
+    print_str sorted_str, sorted_str_length
+    print_str new_line_str, new_line_str_length
+    call sort_maxes
     call print_rows_maxes
 
     exit 0
@@ -248,6 +315,9 @@ segment readable writable
     rows_maxes_str db 'Rows maxes: '
     rows_maxes_str_length = $-rows_maxes_str
 
+    sorted_str db 'Sorted rows maxes: '
+    sorted_str_length = $-sorted_str
+
     debug_str db 'DEBUG: '
     debug_str_length = $-debug_str
 
@@ -260,12 +330,19 @@ segment readable writable
     buff rb 1024
     buff_length = $-buff
 
-    len_1 db 0
-    len_2 db 0
+    len_1 dq 0
+    len_2 dq 0
 
     matrix rq 256*256
-    matrix_rows_maxes rq 256
-    matrix_rows_ptrs rq 256
+    size_of_rows_maxes_n_ptrs = 16
+    matrix_rows_maxes_n_ptrs rb size_of_rows_maxes_n_ptrs * 2 * 256
+
+
+; 1 -2 3 -5
+; 6 -7 8 -9
+; 9 23 84 9
+; -4 -6 -8 -2
+; -7 -9 -3 -1
 
 
 ; display/i $pc
