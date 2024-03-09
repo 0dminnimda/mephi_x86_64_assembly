@@ -256,9 +256,65 @@ sort_maxes: ; inout rsi maxes_ptr
     ret
 
 
+print_row_ptrs:  ; in rsi ptrs ptr
+    push rax rcx rsi
+
+    mov rcx, [len_1]
+    add rsi, size_of_rows_maxes_n_ptrs / 2
+
+  print_row_ptrs_loop:
+
+    test rcx, rcx
+    jz print_row_ptrs_loop_end
+
+    mov rax, [rsi]
+    call print_signed_int_no_new_line
+    print_str space_str, space_str_length
+
+    dec rcx
+    add rsi, size_of_rows_maxes_n_ptrs
+
+    jmp print_row_ptrs_loop
+
+  print_row_ptrs_loop_end:
+
+    print_str new_line_str, new_line_str_length
+
+    pop rsi rcx rax
+
+    ret
+
+
+initialize_row_ptrs:  ; in rdi matrix ptr, in rsi ptrs ptr
+    push rax rdx rcx rsi
+
+    mov rcx, [len_1]
+    mov rdx, 1
+    add rsi, size_of_rows_maxes_n_ptrs / 2
+
+  initialize_row_ptrs_loop:
+
+    test rcx, rcx
+    jz initialize_row_ptrs_loop_end
+
+    mov [rsi], rdx
+    add [rsi], rdi
+
+    dec rcx
+    inc rdx
+    add rsi, size_of_rows_maxes_n_ptrs
+
+    jmp initialize_row_ptrs_loop
+
+  initialize_row_ptrs_loop_end:
+
+    pop rsi rcx rdx rax
+
+    ret
+
+
 entry main
 main:
-
     print_str enter_mat_size_str, enter_mat_size_str_length
 
     call read_matrix_size
@@ -288,13 +344,19 @@ main:
     call get_rows_maxes
     call print_rows_maxes
 
-    
+    print_str rows_ptrs_str, rows_ptrs_str_length
+    print_str new_line_str, new_line_str_length
+    call initialize_row_ptrs
+    call print_row_ptrs
 
     print_str new_line_str, new_line_str_length
-    print_str sorted_str, sorted_str_length
-    print_str new_line_str, new_line_str_length
     call sort_maxes
+    print_str sorted_maxes_str, sorted_maxes_str_length
+    print_str new_line_str, new_line_str_length
     call print_rows_maxes
+    print_str sorted_ptrs_str, sorted_ptrs_str_length
+    print_str new_line_str, new_line_str_length
+    call print_row_ptrs
 
     exit 0
 
@@ -315,8 +377,14 @@ segment readable writable
     rows_maxes_str db 'Rows maxes: '
     rows_maxes_str_length = $-rows_maxes_str
 
-    sorted_str db 'Sorted rows maxes: '
-    sorted_str_length = $-sorted_str
+    rows_ptrs_str db 'Row ptrs: '
+    rows_ptrs_str_length = $-rows_ptrs_str
+
+    sorted_maxes_str db 'Sorted rows maxes: '
+    sorted_maxes_str_length = $-sorted_maxes_str
+
+    sorted_ptrs_str db 'Sorted row ptrs: '
+    sorted_ptrs_str_length = $-sorted_ptrs_str
 
     debug_str db 'DEBUG: '
     debug_str_length = $-debug_str
