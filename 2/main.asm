@@ -29,7 +29,8 @@ print_matrix_size:
     push rax
 
     movzx rax, [len_1]
-    call print_int
+    call print_int_no_new_line
+    print_str space_str, space_str_length
 
     movzx rax, [len_2]
     call print_int
@@ -142,13 +143,68 @@ get_row_max:  ; in rdi row ptr, out rax max
     ret
 
 
+get_rows_maxes:  ; in rdi matrix ptr, inout rsi maxes ptr
+    push rax rcx rdx rdi rsi
+
+    movzx rcx, [len_1]
+    movzx rdx, [len_2]
+
+  get_rows_maxes_loop:
+
+    test rcx, rcx
+    jz get_rows_maxes_loop_end
+
+    call get_row_max
+    mov [rsi], rax
+
+    dec rcx
+    lea rsi, [rsi + 8]
+    lea rdi, [rdi + rdx*8]
+
+    jmp get_rows_maxes_loop
+
+  get_rows_maxes_loop_end:
+
+    pop rsi rdi rdx rcx rax
+
+    ret
+
+
+print_rows_maxes:  ; in rsi maxes ptr
+    push rax rcx rsi
+
+    movzx rcx, [len_1]
+
+  print_rows_maxes_loop:
+
+    test rcx, rcx
+    jz print_rows_maxes_loop_end
+
+    mov rax, [rsi]
+    call print_signed_int_no_new_line
+    print_str space_str, space_str_length
+
+    dec rcx
+    lea rsi, [rsi + 8]
+
+    jmp print_rows_maxes_loop
+
+  print_rows_maxes_loop_end:
+
+    print_str new_line_str, new_line_str_length
+
+    pop rsi rcx rax
+
+    ret
+
+
 entry main
 main:
     print_str enter_mat_size_str, enter_mat_size_str_length
 
     call read_matrix_size
 
-    print_str new_line_str, new_line_str_length
+    print_str read_mat_size_str, read_mat_size_str_length
     call print_matrix_size
 
     print_str new_line_str, new_line_str_length
@@ -162,12 +218,16 @@ main:
     call read_matrix
 
     print_str new_line_str, new_line_str_length
+    print_str read_mat_str, read_mat_str_length
+    print_str new_line_str, new_line_str_length
     call print_matrix
 
     print_str new_line_str, new_line_str_length
-    call get_row_max
-    print_str row_maxes_str, row_maxes_str_length
-    call print_signed_int
+    print_str rows_maxes_str, rows_maxes_str_length
+    print_str new_line_str, new_line_str_length
+    mov rsi, matrix_rows_maxes
+    call get_rows_maxes
+    call print_rows_maxes
 
     exit 0
 
@@ -176,11 +236,17 @@ segment readable writable
     enter_mat_size_str db 'Enter matrix size (width height): '
     enter_mat_size_str_length = $-enter_mat_size_str
 
+    read_mat_size_str db 'Read matrix size: '
+    read_mat_size_str_length = $-read_mat_size_str
+
     enter_mat_str db 'Enter matrix: '
     enter_mat_str_length = $-enter_mat_str
 
-    row_maxes_str db 'Row maxes: '
-    row_maxes_str_length = $-row_maxes_str
+    read_mat_str db 'Read matrix: '
+    read_mat_str_length = $-read_mat_str
+
+    rows_maxes_str db 'Rows maxes: '
+    rows_maxes_str_length = $-rows_maxes_str
 
     debug_str db 'DEBUG: '
     debug_str_length = $-debug_str
@@ -198,8 +264,8 @@ segment readable writable
     len_2 db 0
 
     matrix rq 256*256
-    matrix_row_max rq 256
-    matrix_rows rq 256
+    matrix_rows_maxes rq 256
+    matrix_rows_ptrs rq 256
 
 
 ; display/i $pc
