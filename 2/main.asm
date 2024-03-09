@@ -158,7 +158,7 @@ get_rows_maxes:  ; in rdi matrix ptr, inout rsi maxes ptr
     mov [rsi], rax
 
     dec rcx
-    add rsi, size_of_rows_maxes_n_ptrs
+    add rsi, sizeof.max_n_ptr
     lea rdi, [rdi + rdx*8]
 
     jmp get_rows_maxes_loop
@@ -185,7 +185,7 @@ print_rows_maxes:  ; in rsi maxes ptr
     print_str space_str, space_str_length
 
     dec rcx
-    add rsi, size_of_rows_maxes_n_ptrs
+    add rsi, sizeof.max_n_ptr
 
     jmp print_rows_maxes_loop
 
@@ -220,7 +220,7 @@ sort_maxes: ; inout rsi maxes_ptr
     jge sort_maxes_loop_end
 
     mov rdx, rcx
-    shl rdx, 4  ; rdx * size_of_rows_maxes_n_ptrs
+    shl rdx, 4  ; rdx * sizeof.max_n_ptr
 
   sort_maxes_loop_inner:
 
@@ -228,7 +228,7 @@ sort_maxes: ; inout rsi maxes_ptr
     jz sort_maxes_loop_inner_end
 
     mov r8, [rsi + rdx]
-    cmp r8, [rsi + rdx - size_of_rows_maxes_n_ptrs]
+    cmp r8, [rsi + rdx - sizeof.max_n_ptr]
 if defined REVERSED
     jle sort_maxes_loop_inner_end
 else
@@ -236,14 +236,14 @@ else
 end if
 
     mov r8, [rsi + rdx]
-    xchg r8, [rsi + rdx - size_of_rows_maxes_n_ptrs]
+    xchg r8, [rsi + rdx - sizeof.max_n_ptr]
     xchg [rsi + rdx], r8
 
-    mov r8, [rsi + rdx + size_of_rows_maxes_n_ptrs / 2]
-    xchg r8, [rsi + rdx - size_of_rows_maxes_n_ptrs + size_of_rows_maxes_n_ptrs / 2]
-    xchg [rsi + rdx + size_of_rows_maxes_n_ptrs / 2], r8
+    mov r8, [rsi + rdx + max_n_ptr.y]
+    xchg r8, [rsi + rdx - sizeof.max_n_ptr + max_n_ptr.y]
+    xchg [rsi + rdx + max_n_ptr.y], r8
 
-    sub rdx, size_of_rows_maxes_n_ptrs
+    sub rdx, sizeof.max_n_ptr
 
     jmp sort_maxes_loop_inner
 
@@ -264,7 +264,7 @@ print_row_ptrs:  ; in rsi ptrs ptr
     push rax rcx rsi
 
     mov rcx, [len_1]
-    add rsi, size_of_rows_maxes_n_ptrs / 2
+    add rsi, max_n_ptr.y
 
   print_row_ptrs_loop:
 
@@ -276,7 +276,7 @@ print_row_ptrs:  ; in rsi ptrs ptr
     print_str space_str, space_str_length
 
     dec rcx
-    add rsi, size_of_rows_maxes_n_ptrs
+    add rsi, sizeof.max_n_ptr
 
     jmp print_row_ptrs_loop
 
@@ -294,7 +294,7 @@ initialize_row_ptrs:  ; in rdi matrix ptr, in rsi ptrs ptr
 
     mov rcx, [len_1]
     mov rdx, [len_2]
-    add rsi, size_of_rows_maxes_n_ptrs / 2
+    add rsi, max_n_ptr.y
 
   initialize_row_ptrs_loop:
 
@@ -304,7 +304,7 @@ initialize_row_ptrs:  ; in rdi matrix ptr, in rsi ptrs ptr
     mov [rsi], rdi
 
     dec rcx
-    add rsi, size_of_rows_maxes_n_ptrs
+    add rsi, sizeof.max_n_ptr
     lea rdi, [rdi + rdx*8]
 
     jmp initialize_row_ptrs_loop
@@ -347,12 +347,12 @@ copy_matrix_from_row_ptrs:  ; in rdi matrix ptr, in rsi ptrs ptr
 
     mov rcx, [len_1]
     mov rdx, [len_2]
-    add rsi, size_of_rows_maxes_n_ptrs / 2
+    add rsi, max_n_ptr.y
 
-  from_row_ptrs_update_matrix_loop:
+  copy_matrix_from_row_ptrs_loop:
 
     test rcx, rcx
-    jz from_row_ptrs_update_matrix_loop_end
+    jz copy_matrix_from_row_ptrs_loop_end
 
     push rbx rcx
     mov rcx, rdi  ; copy to matrix
@@ -361,12 +361,12 @@ copy_matrix_from_row_ptrs:  ; in rdi matrix ptr, in rsi ptrs ptr
     pop rcx rbx
 
     dec rcx
-    add rsi, size_of_rows_maxes_n_ptrs
+    add rsi, sizeof.max_n_ptr
     lea rdi, [rdi + rdx*8]
 
-    jmp from_row_ptrs_update_matrix_loop
+    jmp copy_matrix_from_row_ptrs_loop
 
-  from_row_ptrs_update_matrix_loop_end:
+  copy_matrix_from_row_ptrs_loop_end:
 
     pop rdi rsi rcx rdx
 
@@ -470,8 +470,17 @@ segment readable writable
 
     matrix rq 256*256
     sorted_matrix rq 256*256
-    size_of_rows_maxes_n_ptrs = 16
-    matrix_rows_maxes_n_ptrs rb size_of_rows_maxes_n_ptrs * 2 * 256
+
+    struc max_n_ptr x, y {
+        .x dq 0
+        .y dq 0
+    }
+    virtual at 0
+        max_n_ptr max_n_ptr
+        sizeof.max_n_ptr = $-max_n_ptr
+    end virtual
+
+    matrix_rows_maxes_n_ptrs max_n_ptr 2 * 256
 
 
 ; 1 -2 3 -5
