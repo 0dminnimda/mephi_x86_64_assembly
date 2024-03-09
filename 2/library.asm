@@ -54,9 +54,7 @@ endl = 10
 
 macro exit code
 {
-    push rax rsi r10 r11
     syscall1 sys_exit, code
-    pop r11 r10 rsi rax
 }
 
 
