@@ -10,11 +10,11 @@ read_matrix_size:
     mov rdi, buff
     mov rsi, buff_length
 
-    call move_to_number_start
+    call move_to_after_white_space
     call int_from_string
     mov [len_1], al
 
-    call move_to_number_start
+    call move_to_after_white_space
     call int_from_string
     mov [len_2], al
 
@@ -50,7 +50,7 @@ read_matrix:
     jz read_matrix_number_end
     dec r10
 
-    call move_to_number_start
+    call move_to_after_white_space
     call signed_int_from_string
     mov [r8], rax
     add r8, 8

@@ -100,6 +100,28 @@ macro jump_if_not_digit char, target
 }
 
 
+macro jump_if_white_space char, target
+{
+    cmp char, ' '
+    je target
+
+    cmp char, 9
+    je target
+
+    cmp char, 10
+    je target
+
+    cmp char, 11
+    je target
+
+    cmp char, 12
+    je target
+
+    cmp char, 13
+    je target
+}
+
+
 segment readable executable
 
 
@@ -247,28 +269,28 @@ signed_int_from_string:  ; inout rdi buff, inout rsi buff_length, returns rax nu
     ret
 
 
-find_number_start_offset_in_string:  ; in rdi buff, in rsi buff_length, out rax number_offset
+find_after_white_space_offset_in_string:  ; in rdi buff, in rsi buff_length, out rax number_offset
     push rsi rdi
     mov rax, rsi
 
     push rbx rcx
 
-  find_number_start_offset_in_string_loop:
+  find_after_white_space_offset_in_string_loop:
     test rsi, rsi
-    jz find_number_start_offset_in_string_loop_end
+    jz find_after_white_space_offset_in_string_loop_end
     dec rsi
 
     movzx rbx, byte [rdi]
     inc rdi
 
-    jump_if_not_digit rbx, find_number_start_offset_in_string_loop
+    jump_if_white_space rbx, find_after_white_space_offset_in_string_loop
 
-  find_number_start_offset_in_string_loop_end_step_back:
+  find_after_white_space_offset_in_string_loop_end_step_back:
 
     inc rsi
     dec rdi
 
-  find_number_start_offset_in_string_loop_end:
+  find_after_white_space_offset_in_string_loop_end:
 
     pop rcx rbx
 
@@ -278,10 +300,10 @@ find_number_start_offset_in_string:  ; in rdi buff, in rsi buff_length, out rax 
     ret
 
 
-move_to_number_start:  ; inout rdi buff, inout rsi buff_length
+move_to_after_white_space:  ; inout rdi buff, inout rsi buff_length
     push rax
 
-    call find_number_start_offset_in_string
+    call find_after_white_space_offset_in_string
     add rdi, rax
     sub rsi, rax
 
