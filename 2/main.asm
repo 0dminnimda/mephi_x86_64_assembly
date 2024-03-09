@@ -286,10 +286,10 @@ print_row_ptrs:  ; in rsi ptrs ptr
 
 
 initialize_row_ptrs:  ; in rdi matrix ptr, in rsi ptrs ptr
-    push rax rdx rcx rsi
+    push rax rdx rcx rsi rdi
 
     mov rcx, [len_1]
-    mov rdx, 1
+    mov rdx, [len_2]
     add rsi, size_of_rows_maxes_n_ptrs / 2
 
   initialize_row_ptrs_loop:
@@ -297,18 +297,74 @@ initialize_row_ptrs:  ; in rdi matrix ptr, in rsi ptrs ptr
     test rcx, rcx
     jz initialize_row_ptrs_loop_end
 
-    mov [rsi], rdx
-    add [rsi], rdi
+    mov [rsi], rdi
 
     dec rcx
-    inc rdx
     add rsi, size_of_rows_maxes_n_ptrs
+    lea rdi, [rdi + rdx*8]
 
     jmp initialize_row_ptrs_loop
 
   initialize_row_ptrs_loop_end:
 
-    pop rsi rcx rdx rax
+    pop rdi rsi rcx rdx rax
+
+    ret
+
+
+copy_row:  ; inout rbx row_from ptr, inout rcx row_to ptr
+    push rbx rcx r8 r9
+
+    mov r8, [len_2]
+
+  copy_row_loop:
+
+    test r8, r8
+    jz copy_row_loop_end
+
+    mov r9, [rbx]
+    mov [rcx], r9
+
+    dec r8
+    add rbx, 8
+    add rcx, 8
+
+    jmp copy_row_loop
+
+  copy_row_loop_end:
+
+    pop r9 r8 rcx rbx
+
+    ret
+
+
+copy_matrix_from_row_ptrs:  ; in rdi matrix ptr, in rsi ptrs ptr
+    push rdx rcx rsi rdi
+
+    mov rcx, [len_1]
+    mov rdx, [len_2]
+    add rsi, size_of_rows_maxes_n_ptrs / 2
+
+  from_row_ptrs_update_matrix_loop:
+
+    test rcx, rcx
+    jz from_row_ptrs_update_matrix_loop_end
+
+    push rbx rcx
+    mov rcx, rdi  ; copy to matrix
+    mov rbx, [rsi]  ; from ptrs
+    call copy_row
+    pop rcx rbx
+
+    dec rcx
+    add rsi, size_of_rows_maxes_n_ptrs
+    lea rdi, [rdi + rdx*8]
+
+    jmp from_row_ptrs_update_matrix_loop
+
+  from_row_ptrs_update_matrix_loop_end:
+
+    pop rdi rsi rcx rdx
 
     ret
 
@@ -358,6 +414,14 @@ main:
     print_str new_line_str, new_line_str_length
     call print_row_ptrs
 
+    mov rdi, sorted_matrix
+    call copy_matrix_from_row_ptrs
+
+    print_str new_line_str, new_line_str_length
+    print_str sorted_mat_str, sorted_mat_str_length
+    print_str new_line_str, new_line_str_length
+    call print_matrix
+
     exit 0
 
 
@@ -386,6 +450,9 @@ segment readable writable
     sorted_ptrs_str db 'Sorted row ptrs: '
     sorted_ptrs_str_length = $-sorted_ptrs_str
 
+    sorted_mat_str db 'Sorted matrix: '
+    sorted_mat_str_length = $-sorted_mat_str
+
     debug_str db 'DEBUG: '
     debug_str_length = $-debug_str
 
@@ -402,6 +469,7 @@ segment readable writable
     len_2 dq 0
 
     matrix rq 256*256
+    sorted_matrix rq 256*256
     size_of_rows_maxes_n_ptrs = 16
     matrix_rows_maxes_n_ptrs rb size_of_rows_maxes_n_ptrs * 2 * 256
 
