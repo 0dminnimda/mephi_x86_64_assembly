@@ -203,7 +203,7 @@ print_signed_int_no_new_line:  ; rax number input
 read_signed_int:  ; rax number output
     push rdi rsi
 
-    input _library_buff, _library_buff_length
+    input _library_buff, _library_buff.len
 
     lea rdi, [_library_buff]
     mov rsi, rax
@@ -217,7 +217,7 @@ read_signed_int:  ; rax number output
 read_int:  ; rax number output
     push rdi rsi
 
-    input _library_buff, _library_buff_length
+    input _library_buff, _library_buff.len
 
     lea rdi, [_library_buff]
     mov rsi, rax
@@ -235,39 +235,39 @@ signed_int_from_string:  ; inout rdi buff, inout rsi buff_length, returns rax nu
 
     push rbx rcx
 
-  signed_int_from_string_loop:
+  signed_int_from_string.loop:
     test rsi, rsi
-    jz signed_int_from_string_loop_end
+    jz signed_int_from_string.loop_end
     dec rsi
 
     movzx rbx, byte [rdi]
     inc rdi
 
     cmp rbx, 0
-    je signed_int_from_string_loop
+    je signed_int_from_string.loop
 
     cmp rbx, endl
-    je signed_int_from_string_loop
+    je signed_int_from_string.loop
 
     cmp rbx, ' '
-    je signed_int_from_string_loop
+    je signed_int_from_string.loop
 
     cmp rbx, '+'
-    je signed_int_from_string_loop
+    je signed_int_from_string.loop
 
     cmp rbx, '-'
-    jne signed_int_from_string_loop_end_step_back
+    jne signed_int_from_string.loop_end_step_back
 
     xor r8, 1
 
-    jmp signed_int_from_string_loop
+    jmp signed_int_from_string.loop
 
-  signed_int_from_string_loop_end_step_back:
+  signed_int_from_string.loop_end_step_back:
 
     inc rsi
     dec rdi
 
-  signed_int_from_string_loop_end:
+  signed_int_from_string.loop_end:
 
     pop rcx rbx
 
@@ -276,11 +276,11 @@ signed_int_from_string:  ; inout rdi buff, inout rsi buff_length, returns rax nu
     and rax, [_library_64bit_non_sign_bits]  ; clear sign bit
 
     test r8, r8
-    jz signed_int_from_string_not_signed
+    jz signed_int_from_string.not_signed
 
     negate_2s_complement rax
 
-  signed_int_from_string_not_signed:
+  signed_int_from_string.not_signed:
 
     pop r8
 
@@ -293,22 +293,22 @@ find_after_white_space_offset_in_string:  ; in rdi buff, in rsi buff_length, out
 
     push rbx rcx
 
-  find_after_white_space_offset_in_string_loop:
+  find_after_white_space_offset_in_string.loop:
     test rsi, rsi
-    jz find_after_white_space_offset_in_string_loop_end
+    jz find_after_white_space_offset_in_string.loop_end
     dec rsi
 
     movzx rbx, byte [rdi]
     inc rdi
 
-    jump_if_white_space rbx, find_after_white_space_offset_in_string_loop
+    jump_if_white_space rbx, find_after_white_space_offset_in_string.loop
 
-  find_after_white_space_offset_in_string_loop_end_step_back:
+  find_after_white_space_offset_in_string.loop_end_step_back:
 
     inc rsi
     dec rdi
 
-  find_after_white_space_offset_in_string_loop_end:
+  find_after_white_space_offset_in_string.loop_end:
 
     pop rcx rbx
 
@@ -336,24 +336,24 @@ find_number_end_offset_in_string:  ; in rdi buff, in rsi buff_length, out rax nu
 
     push rbx rcx
 
-  find_number_end_offset_in_string_loop:
+  find_number_end_offset_in_string.loop:
     test rsi, rsi
-    jz find_number_end_offset_in_string_loop_end
+    jz find_number_end_offset_in_string.loop_end
     dec rsi
 
     movzx rbx, byte [rdi]
     inc rdi
 
-    jump_if_not_digit rbx, find_number_end_offset_in_string_loop_end_step_back
+    jump_if_not_digit rbx, find_number_end_offset_in_string.loop_end_step_back
 
-    jmp find_number_end_offset_in_string_loop
+    jmp find_number_end_offset_in_string.loop
 
-  find_number_end_offset_in_string_loop_end_step_back:
+  find_number_end_offset_in_string.loop_end_step_back:
 
     inc rsi
     dec rdi
 
-  find_number_end_offset_in_string_loop_end:
+  find_number_end_offset_in_string.loop_end:
 
     pop rcx rbx
 
@@ -378,11 +378,11 @@ int_from_string:  ; inout rdi buff, inout rsi buff_length, returns rax
     push rbx rcx
 
     cmp rsi, 0
-    je int_from_string_end_reading
+    je int_from_string.end_reading
 
-  int_from_string_read_one_digit:
+  int_from_string.read_one_digit:
     test rsi, rsi
-    jz int_from_string_end_reading
+    jz int_from_string.end_reading
     dec rsi
 
     movzx rbx, byte [rdi + rsi]
@@ -392,9 +392,9 @@ int_from_string:  ; inout rdi buff, inout rsi buff_length, returns rax
     add rax, rbx
     imul rcx, 10
 
-    jmp int_from_string_read_one_digit
+    jmp int_from_string.read_one_digit
 
-  int_from_string_end_reading:
+  int_from_string.end_reading:
     pop rcx rbx
 
     pop r8  ; number_offset
@@ -414,13 +414,13 @@ string_from_int:  ; rax number, rdi buff, rsi characters written
     mov rsi, 0
 
     cmp rax, 0
-    jne string_from_int_main
+    jne string_from_int.main
 
     inc rsi
     mov [rdi], byte '0'
 
-    jmp string_from_int_end
-  string_from_int_main:
+    jmp string_from_int.end
+  string_from_int.main:
 
     repeat 20  ; 2^64 = 18446744073709551616
         ; rax - Dividend
@@ -434,10 +434,10 @@ string_from_int:  ; rax number, rdi buff, rsi characters written
         inc rsi
 
         cmp rax, 0
-        je string_from_int_div_end
+        je string_from_int.div_end
     end repeat
 
-  string_from_int_div_end:
+  string_from_int.div_end:
 
     push r8 r9
 
@@ -446,7 +446,7 @@ string_from_int:  ; rax number, rdi buff, rsi characters written
     mov r8, 0
     mov r9, rsi
     dec r9
-  string_from_int_flip:
+  string_from_int.flip:
 
     mov al, [rdi + r8]
     xchg al, [rdi + r9]
@@ -455,18 +455,18 @@ string_from_int:  ; rax number, rdi buff, rsi characters written
     inc r8
     dec r9
     cmp r8, r9
-    jle string_from_int_flip
+    jle string_from_int.flip
 
     pop r9 r8
 
-  string_from_int_end:
+  string_from_int.end:
     pop rcx rdx rax
 
     ret
 
 
 string_from_signed_int:  ; rax number, rdi buff, rsi characters written
-    jump_if_positive rax, string_from_signed_int_positive
+    jump_if_positive rax, string_from_signed_int.positive
 
     negate_2s_complement rax
 
@@ -481,7 +481,7 @@ string_from_signed_int:  ; rax number, rdi buff, rsi characters written
 
     ret
 
-  string_from_signed_int_positive:
+  string_from_signed_int.positive:
 
     call string_from_int
 
@@ -490,26 +490,26 @@ string_from_signed_int:  ; rax number, rdi buff, rsi characters written
 
 factorial:  ; rax number input and output
     cmp rax, 1
-    jg factorial_calculate
+    jg factorial.calculate
 
     ; return one
     mov rax, 1
-    jmp factorial_end
+    jmp factorial.end
 
-  factorial_calculate:
+  factorial.calculate:
     push rsi
     mov rsi, rax
 
-  factorial_calculate_one:
+  factorial.calculate_one:
     dec rsi
     imul rax, rsi
 
     cmp rsi, 1
-    jg factorial_calculate_one
+    jg factorial.calculate_one
 
     pop rsi
 
-  factorial_end:
+  factorial.end:
     ret
 
 
@@ -534,17 +534,17 @@ macro get_arg_and_env arg_len, arg_ptr, env_len, env_ptr
 
     mov [env_len], 0
 
-  read_arg_and_env_loop:
+  get_arg_and_env.loop:
     mov rcx, [rsp]
     test rcx, rcx
-    jz read_arg_and_env_loop_end
+    jz get_arg_and_env.loop_end
 
     inc [env_len]
     add rsp, 8
 
-    jmp read_arg_and_env_loop
+    jmp get_arg_and_env.loop
 
-  read_arg_and_env_loop_end:
+  get_arg_and_env.loop_end:
 
     mov rcx, [_library_initial_rcx]  ; pop rcx without altering the stack
 }
@@ -587,7 +587,7 @@ segment readable writable
     env_ptr dq 0
 
     _library_buff rb 1024
-    _library_buff_length = $-_library_buff
+    _library_buff.len = $-_library_buff
 
     _library_number_string_buffer rb 32
     _library_64bit_non_sign_bits dq 0x7FFFFFFFFFFFFFFF
