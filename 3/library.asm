@@ -1,3 +1,11 @@
+include '../fasm_macro/IF.INC'
+
+macro .break
+{
+  jmp __ENDW
+}
+
+
 macro do_syscall sys_call_number  ; r10 and r11 can be overriden!!!
 {
     mov rax, sys_call_number
@@ -74,6 +82,12 @@ macro print_str buffer, length
 }
 
 
+macro print_str_auto_len buffer
+{
+    print_str buffer, buffer#.len
+}
+
+
 macro jump_if_positive thing, target
 {
     test thing, thing
@@ -85,6 +99,12 @@ macro negate_2s_complement thing
 {
     not thing
     inc thing
+}
+
+
+macro zero_out reg
+{
+    xor reg, reg
 }
 
 
@@ -507,8 +527,9 @@ macro get_arg_and_env arg_len, arg_ptr, env_len, env_ptr
     add rsp, 8
     mov [arg_ptr], rsp
 
-    add rsp, [arg_len]
-    add rsp, 8
+    mov rcx, [arg_len]
+    lea rcx, [rcx*8 + 8]
+    add rsp, rcx
 
     mov [env_ptr], rsp
 
@@ -529,6 +550,33 @@ macro get_arg_and_env arg_len, arg_ptr, env_len, env_ptr
     mov rcx, [_library_initial_rcx]  ; pop rcx without altering the stack
     ; mov rsp, [_library_initial_rsp]  ; pop rsp without altering the stack
 }
+
+
+strlen:
+    ; in rdi: str ptr
+    ; out rax: len of str (excluding the null terminator)
+
+    zero_out rax
+
+    .if rdi = 0
+        ret
+    .endif
+
+    push rbx
+
+    .while 1
+        movzx rbx, byte [rdi + rax]
+
+        .if rbx = 0
+            .break
+        .endif
+
+        inc rax
+    .endw
+
+    pop rbx
+
+    ret
 
 
 segment readable writable
