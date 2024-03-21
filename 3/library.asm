@@ -330,6 +330,50 @@ move_to_after_white_space:  ; inout rdi buff, inout rsi buff_length
     ret
 
 
+find_after_word_offset_in_string:  ; in rdi buff, in rsi buff_length, out rax number_offset
+    push rsi rdi
+    mov rax, rsi
+
+    push rbx rcx
+
+  find_after_word_offset_in_string.loop:
+    test rsi, rsi
+    jz find_after_word_offset_in_string.loop_end
+    dec rsi
+
+    movzx rbx, byte [rdi]
+    inc rdi
+
+    jump_if_white_space rbx, find_after_word_offset_in_string.loop_end_step_back
+    jmp find_after_word_offset_in_string.loop
+
+  find_after_word_offset_in_string.loop_end_step_back:
+
+    inc rsi
+    dec rdi
+
+  find_after_word_offset_in_string.loop_end:
+
+    pop rcx rbx
+
+    sub rax, rsi
+    pop rdi rsi
+
+    ret
+
+
+move_to_after_word:  ; inout rdi buff, inout rsi buff_length
+    push rax
+
+    call find_after_word_offset_in_string
+    add rdi, rax
+    sub rsi, rax
+
+    pop rax
+
+    ret
+
+
 find_number_end_offset_in_string:  ; in rdi buff, in rsi buff_length, out rax number_offset
     push rsi rdi
     mov rax, rsi

@@ -37,21 +37,34 @@ find_N_rot_amount:
 
 
 process:
-    push rax rdi rsi
+    push rax rbx rcx rdi rsi
 
     input buff_in, buff_in.cap
     mov rdi, buff_in
     mov rsi, buff_in.cap
 
-    call move_to_after_white_space
-    call int_from_string
-    ; mov [len_1], rax
+    .while 1
+        .if rsi = 0 | byte [rdi] = 0
+            .break
+        .endif
 
-    call move_to_after_white_space
-    call int_from_string
-    ; mov [len_2], rax
+        call move_to_after_white_space
 
-    pop rsi rdi rax
+        .if rsi = 0 | byte [rdi] = 0
+            .break
+        .endif
+
+        mov rbx, rsi
+        mov rcx, rdi
+        call move_to_after_word
+        sub rbx, rsi
+        print_str rcx, rbx
+        print_str_auto_len space_str
+    .endw
+
+    print_str_auto_len new_line_str
+
+    pop rsi rdi rcx rbx rax
 
     ret
 
@@ -66,6 +79,8 @@ main:
     mov rax, [rot_amount]
     call print_int
 
+    call process
+
     exit 0
 
 
@@ -73,8 +88,8 @@ segment readable writable
     read_n_str db 'Read N (rot amount): '
     read_n_str.len = $-read_n_str
 
-    rows_ptrs_str db 'Row ptrs: '
-    rows_ptrs_str.len = $-rows_ptrs_str
+    input_lines_str db 'Input lines: '
+    input_lines_str.len = $-input_lines_str
 
     debug_str db 'DEBUG: '
     debug_str.len = $-debug_str
