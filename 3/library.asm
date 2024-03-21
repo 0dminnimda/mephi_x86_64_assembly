@@ -591,6 +591,3 @@ segment readable writable
 
     _library_number_string_buffer rb 32
     _library_64bit_non_sign_bits dq 0x7FFFFFFFFFFFFFFF
-
-    _library_minus db '-'
-    _library_minus_length = $-_library_minus
