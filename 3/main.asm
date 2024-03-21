@@ -36,6 +36,22 @@ find_N_rot_amount:
     ret
 
 
+rot_string:  ; in mut rdi: buff, in rsi: buff_length, in rdx: rot_amount
+    .if rsi <= 1 | rdx = 0
+        ret
+    .endif
+
+    push rbx
+
+    mov rbx, [rdi]
+
+    ; TODO
+
+    pop rbx
+
+    ret
+
+
 process:
     push rax rbx rcx rdi rsi
 
