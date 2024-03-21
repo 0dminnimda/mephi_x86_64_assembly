@@ -518,7 +518,6 @@ macro get_arg_and_env arg_len, arg_ptr, env_len, env_ptr
 ; loads into specified memory locations
 ; have to be called as a first thing in the program entry point
 {
-    ; mov [_library_initial_rsp], rsp  ; push rsp without altering the stack
     mov [_library_initial_rcx], rcx  ; push rcx without altering the stack
 
     mov rcx, [rsp]
@@ -548,7 +547,6 @@ macro get_arg_and_env arg_len, arg_ptr, env_len, env_ptr
   read_arg_and_env_loop_end:
 
     mov rcx, [_library_initial_rcx]  ; pop rcx without altering the stack
-    ; mov rsp, [_library_initial_rsp]  ; pop rsp without altering the stack
 }
 
 
@@ -580,7 +578,6 @@ strlen:
 
 
 segment readable writable
-    _library_initial_rsp dq 0
     _library_initial_rcx dq 0
 
     arg_len dq 0
