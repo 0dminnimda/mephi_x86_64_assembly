@@ -150,6 +150,41 @@ process:
     ret
 
 
+setup_filename:
+    push rsi rdi rax rcx
+
+    .if [arg_len] >= 2
+        mov rsi, [arg_ptr]
+        add rsi, 8
+        mov rsi, [rsi]
+        mov rdi, rsi
+        call strlen
+        mov rcx, rax
+        .if rcx > 1024
+            mov rcx, 1024
+        .endif
+    .else
+        mov rsi, default_filename
+        mov rcx, default_filename.len
+    .endif
+
+    mov rdi, filename
+    cld
+    push rcx
+    rep movsb
+    pop rcx
+
+    print_str_auto_len writing_to_file_str
+    print_str_auto_len quote_str
+    print_str filename, rcx
+    print_str_auto_len quote_str
+    print_str_auto_len new_line_str
+
+    pop rcx rax rdi rsi
+
+    ret
+
+
 entry main
 main:
     get_arg_and_env arg_len, arg_ptr, env_len, env_ptr
@@ -159,6 +194,8 @@ main:
     print_str_auto_len read_n_str
     mov rax, [rot_amount]
     call print_int
+
+    call setup_filename
 
     call process
 
@@ -171,6 +208,9 @@ segment readable writable
 
     input_lines_str db 'Input lines: '
     input_lines_str.len = $-input_lines_str
+
+    writing_to_file_str db 'Writing to file: '
+    writing_to_file_str.len = $-writing_to_file_str
 
     debug_str db 'DEBUG: '
     debug_str.len = $-debug_str
@@ -186,6 +226,12 @@ segment readable writable
 
     buff_in rb 1024
     buff_in.cap = $-buff_in
+
+    filename rb 1024
+    filename.cap = $-filename
+
+    default_filename db 'out.txt', 0
+    default_filename.len = $-default_filename
 
     buff_out rb 1024
     buff_out.cap = $-buff_out
