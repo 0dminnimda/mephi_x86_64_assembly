@@ -37,23 +37,44 @@ find_N_rot_amount:
 
 
 rot_string:  ; in mut rdi: buff, in rsi: buff_length, in rdx: rot_amount
-    .if rsi <= 1 | rdx = 0
-        ret
+    push rdx rbx rcx r8 r9
+
+    .if rsi <= 1
+        jmp rot_string.end
     .endif
 
-    push rbx
+    ; rot_amount = rot_amount % length
+    push rax
+    mov rax, rdx
+    cqo
+    idiv rsi
+    pop rax
 
+    .if rdx = 0
+        jmp rot_string.end
+    .endif
+
+    zero_out rcx  ; count
+    zero_out r8  ; start
     mov rbx, [rdi]
 
-    ; TODO
+    .while rcx < rsi
+        mov r9, r8  ; current
+        
+    .endw
 
-    pop rbx
+  rot_string.end:
+    pop r9 r8 rcx rbx rdx
 
     ret
 
 
 process:
-    push rax rbx rcx rdi rsi
+    push rax rbx rcx rdi rsi rdx
+
+    mov rdx, [rot_amount]
+    ; we want to rotate left, so do -rot_amount
+    negate_2s_complement rdx
 
     input buff_in, buff_in.cap
     mov rdi, buff_in
@@ -74,13 +95,21 @@ process:
         mov rcx, rdi
         call move_to_after_word
         sub rbx, rsi
+        
+        push rdi rsi
+        mov rdi, rcx
+        mov rsi, rbx
+        print_str_auto_len new_line_str
+        call rot_string
+        pop rsi rdi
+
         print_str rcx, rbx
         print_str_auto_len space_str
     .endw
 
     print_str_auto_len new_line_str
 
-    pop rsi rdi rcx rbx rax
+    pop rdx rsi rdi rcx rbx rax
 
     ret
 
