@@ -37,7 +37,7 @@ find_N_rot_amount:
 
 
 rot_string:  ; in mut rdi: buff, in rsi: buff_length, in rdx: rot_amount
-    push rdx rbx rcx r8 r9
+    push rdx rbx rcx r8 r9 r10
 
     .if rsi <= 1
         jmp rot_string.end
@@ -50,21 +50,56 @@ rot_string:  ; in mut rdi: buff, in rsi: buff_length, in rdx: rot_amount
     idiv rsi
     pop rax
 
+    ; make sure it's positive
+    cmp rdx, 0
+    jg rot_string.positive_rot
+    add rdx, rsi
+    rot_string.positive_rot:
+
     .if rdx = 0
         jmp rot_string.end
     .endif
 
+    ; k = k % len(arr)
+    ; count = 0
+    ; start = 0
+    ; while count < len(arr):
+    ;     current = start
+    ;     prev = arr[start]
+    ;     while 1:
+    ;         ...
+    ;     start += 1                                                                                       start += 1
+
     zero_out rcx  ; count
     zero_out r8  ; start
-    mov rbx, [rdi]
 
     .while rcx < rsi
         mov r9, r8  ; current
-        
+        mov r10b, byte [rdi + r8]  ; prev
+
+        .repeat
+            ; current = (current + k) % len(arr)
+            ; prev, arr[current] = arr[current], prev
+            ; count += 1
+            ; if start == current:
+            ;     break
+            add r9, rdx
+
+            push rax rdx
+            mov rax, r9
+            cqo
+            idiv rsi
+            mov r9, rdx
+            pop rdx rax
+
+            xchg r10b, byte [rdi + r9]
+            inc rcx
+        .until r8 = r9
+        inc r8
     .endw
 
   rot_string.end:
-    pop r9 r8 rcx rbx rdx
+    pop r10 r9 r8 rcx rbx rdx
 
     ret
 
@@ -95,15 +130,16 @@ process:
         mov rcx, rdi
         call move_to_after_word
         sub rbx, rsi
-        
+
         push rdi rsi
         mov rdi, rcx
         mov rsi, rbx
-        print_str_auto_len new_line_str
         call rot_string
         pop rsi rdi
 
+        print_str_auto_len quote_str
         print_str rcx, rbx
+        print_str_auto_len quote_str
         print_str_auto_len space_str
     .endw
 
@@ -141,6 +177,9 @@ segment readable writable
 
     space_str db ' '
     space_str.len = $-space_str
+
+    quote_str db '"'
+    quote_str.len = $-quote_str
 
     new_line_str db endl
     new_line_str.len = $-new_line_str

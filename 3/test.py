@@ -6,9 +6,8 @@ def rot(arr, k):
         current = start
         prev = arr[start]
         while 1:
-            next = (current + k) % len(arr)
-            prev, arr[next] = arr[next], prev
-            current = next
+            current = (current + k) % len(arr)
+            prev, arr[current] = arr[current], prev
             count += 1
             if start == current:
                 break
@@ -16,7 +15,7 @@ def rot(arr, k):
 
 
 
-a = list(range(2))
+a = list(range(10))
 rot(a, 3)
 print(a)
 rot(a, -3)
