@@ -138,22 +138,30 @@ process:
         call rot_string
         pop rsi rdi
 
-        print_str_auto_len quote_str
-        print_str rcx, rbx
-        print_str_auto_len quote_str
-        print_str_auto_len space_str
+        ; print_str_auto_len quote_str
+        ; print_str rcx, rbx
+        ; print_str_auto_len quote_str
+        ; print_str_auto_len space_str
 
-        ; push rcx rsi rdi
-        ; mov rdi, [buff_out_ptr]
-        ; mov rsi, rbx
-        ; cld
-        ; rep movsd
-        ; pop rdi rsi rcx
+        mov byte [r8], '"'
+        inc r8
 
-        ; add [buff_out_ptr], rcx
+        push rcx rsi rdi rbx
+        mov rdi, r8
+        mov rsi, rcx
+        mov rcx, rbx
+        cld
+        rep movsd
+        pop rbx rdi rsi rcx
+
+        add r8, rbx
+
+        mov byte [r8], '"'
+        inc r8
 
         mov byte [r8], ' '
         inc r8
+
     .endw
 
     mov byte [r8], endl
@@ -161,7 +169,7 @@ process:
 
     mov [buff_out_ptr], r8
 
-    print_str_auto_len new_line_str
+    ; print_str_auto_len new_line_str
 
     pop r8 rdx rsi rdi rcx rbx rax
 
@@ -211,7 +219,7 @@ write_processed:
     mov rbx, [buff_out_ptr]
     sub rbx, buff_out
     fprint_str rax, buff_out, rbx
-    print_str buff_out, rbx
+    ; print_str buff_out, rbx
 
     close rax
 
