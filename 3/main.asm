@@ -160,8 +160,8 @@ setup_filename:
         mov rdi, rsi
         call strlen
         mov rcx, rax
-        .if rcx > 1024
-            mov rcx, 1024
+        .if rcx > filename.cap
+            mov rcx, filename.cap
         .endif
     .else
         mov rsi, default_filename
@@ -197,6 +197,9 @@ main:
 
     call setup_filename
 
+    open filename, file_flags, file_mode
+    close rax
+
     call process
 
     exit 0
@@ -228,10 +231,14 @@ segment readable writable
     buff_in.cap = $-buff_in
 
     filename rb 1024
-    filename.cap = $-filename
+    filename.cap_with_null = $-filename
+    filename.cap = filename.cap_with_null - 1
 
     default_filename db 'out.txt', 0
     default_filename.len = $-default_filename
+
+    file_flags = 0102o ; O_WRONLY | O_CREAT
+    file_mode = 00600o ; User has read and write permission
 
     buff_out rb 1024
     buff_out.cap = $-buff_out

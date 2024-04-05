@@ -56,6 +56,8 @@ stderr = 2
 
 sys_read = 0
 sys_write = 1
+sys_open = 2
+sys_close = 3
 sys_exit = 60
 
 endl = 10
@@ -87,6 +89,21 @@ macro print_str_auto_len buffer
     print_str buffer, buffer#.len
 }
 
+
+macro open filename, flags, permissions ; out rax: file_descr
+{
+    push rdi rsi rdx r10 r11
+    syscall3 sys_open, filename, flags, permissions
+    pop r11 r10 rdx rsi rdi
+}
+
+
+macro close file_descr
+{
+    push rdi rax r10 r11
+    syscall1 sys_close, file_descr
+    pop r11 r10 rax rdi
+}
 
 macro jump_if_positive thing, target
 {
