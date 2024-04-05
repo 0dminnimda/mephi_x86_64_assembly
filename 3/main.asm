@@ -68,7 +68,7 @@ rot_string:  ; in mut rdi: buff, in rsi: buff_length, in rdx: rot_amount
     ;     prev = arr[start]
     ;     while 1:
     ;         ...
-    ;     start += 1                                                                                       start += 1
+    ;     start += 1
 
     zero_out rcx  ; count
     zero_out r8  ; start
@@ -105,7 +105,7 @@ rot_string:  ; in mut rdi: buff, in rsi: buff_length, in rdx: rot_amount
 
 
 process:
-    push rax rbx rcx rdi rsi rdx
+    push rax rbx rcx rdi rsi rdx r8
 
     mov rdx, [rot_amount]
     ; we want to rotate left, so do -rot_amount
@@ -114,6 +114,7 @@ process:
     input buff_in, buff_in.cap
     mov rdi, buff_in
     mov rsi, buff_in.cap
+    mov r8, [buff_out_ptr]
 
     .while 1
         .if rsi = 0 | byte [rdi] = 0
@@ -141,11 +142,28 @@ process:
         print_str rcx, rbx
         print_str_auto_len quote_str
         print_str_auto_len space_str
+
+        ; push rcx rsi rdi
+        ; mov rdi, [buff_out_ptr]
+        ; mov rsi, rbx
+        ; cld
+        ; rep movsd
+        ; pop rdi rsi rcx
+
+        ; add [buff_out_ptr], rcx
+
+        mov byte [r8], ' '
+        inc r8
     .endw
+
+    mov byte [r8], endl
+    inc r8
+
+    mov [buff_out_ptr], r8
 
     print_str_auto_len new_line_str
 
-    pop rdx rsi rdi rcx rbx rax
+    pop r8 rdx rsi rdi rcx rbx rax
 
     ret
 
@@ -185,6 +203,23 @@ setup_filename:
     ret
 
 
+write_processed:
+    push rbx rax
+
+    open filename, file_flags, file_mode
+
+    mov rbx, [buff_out_ptr]
+    sub rbx, buff_out
+    fprint_str rax, buff_out, rbx
+    print_str buff_out, rbx
+
+    close rax
+
+    pop rax rbx
+
+    ret
+
+
 entry main
 main:
     get_arg_and_env arg_len, arg_ptr, env_len, env_ptr
@@ -197,10 +232,9 @@ main:
 
     call setup_filename
 
-    open filename, file_flags, file_mode
-    close rax
-
     call process
+
+    call write_processed
 
     exit 0
 
@@ -227,7 +261,7 @@ segment readable writable
     new_line_str db endl
     new_line_str.len = $-new_line_str
 
-    buff_in rb 1024
+    buff_in rb 1024*1024
     buff_in.cap = $-buff_in
 
     filename rb 1024
@@ -240,9 +274,9 @@ segment readable writable
     file_flags = 0102o ; O_WRONLY | O_CREAT
     file_mode = 00600o ; User has read and write permission
 
-    buff_out rb 1024
+    buff_out rb 1024*1024
     buff_out.cap = $-buff_out
-    buff_out.len dq 0
+    buff_out_ptr dq buff_out
 
     rot_amount dq 0
 
