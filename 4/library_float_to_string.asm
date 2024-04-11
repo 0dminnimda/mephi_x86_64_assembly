@@ -1,7 +1,3 @@
-format ELF64 executable 3
-
-include 'library.asm'
-
 ; IEEE 754 floating point format for double is:
 ; sign (1 bit) exponent (11 bits) mantissa (52 bits)
 ; the exact number is (-1)^sign * (1.mantissa) * 2^(exponent - 1023)
@@ -42,7 +38,7 @@ high_bits_of_mul_by_powers_of_5:  ; in rax: with number, in rbx: with power, out
     test rbx, rbx
     jz high_bits_of_mul_by_powers_of_5_loop_end
 
-    cmp rax, [high_bits_of_mul_by_powers_of_5_threshold]  ; if number > (1 << 61)
+    cmp rax, [_library.high_bits_of_mul_by_powers_of_5_threshold]  ; if number > (1 << 61)
     jb high_bits_of_mul_by_powers_of_5_no_threshold
 
     ; rax - Dividend
@@ -76,7 +72,7 @@ high_bits_of_mul_by_powers_of_2:  ; rax input with number, rbx input with power,
     test rbx, rbx
     jz high_bits_of_mul_by_powers_of_2_loop_end
 
-    cmp rax, [high_bits_of_mul_by_powers_of_2_threshold]  ; if number > (1 << 63)
+    cmp rax, [_library.high_bits_of_mul_by_powers_of_2_threshold]  ; if number > (1 << 63)
     jb high_bits_of_mul_by_powers_of_2_no_threshold
 
     ; rax - Dividend
@@ -117,8 +113,8 @@ get_double_decompossion:  ; rax input with float loaded, rax output mantissa, rb
     pop rax
 
     ; get mantissa - 0x10000000000000 + (long & 0xfffffffffffff)
-    and rax, qword [get_double_decompossion_mantissa_and]
-    add rax, qword [get_double_decompossion_mantissa_one]
+    and rax, qword [_library.get_double_decompossion_mantissa_and]
+    add rax, qword [_library.get_double_decompossion_mantissa_one]
 
     ret
 
@@ -230,40 +226,9 @@ print_dobule:  ; rax input dobule bits
     ret
 
 
-entry main
-main:
-    mov rax, [flt]
-    call print_dobule
-
-    exit 0
-
-
 segment readable writable
-    enter_a_number db 'Enter a number: '
-    enter_a_number.len = $-enter_a_number
+    _library.get_double_decompossion_mantissa_and dq 0xfffffffffffff
+    _library.get_double_decompossion_mantissa_one dq 0x10000000000000
 
-    got_number_from_string db 'Got number from a string: '
-    got_number_from_string.len = $-got_number_from_string
-
-    calculation_result db 'Calculation result: '
-    calculation_result.len = $-calculation_result
-
-    new_line_str db endl
-    new_line_str.len = $-new_line_str
-
-    ; flt dq -3.14
-    ; flt dq -0.314
-    ; flt dq -0.0314
-    ; flt dq -0.00314
-    ; flt dq 123345456457123345456457123345456457.5
-    flt dq 3e145
-    ; flt dq 4e-145
-
-    get_double_decompossion_mantissa_and dq 0xfffffffffffff
-    get_double_decompossion_mantissa_one dq 0x10000000000000
-
-    high_bits_of_mul_by_powers_of_5_threshold dq 2305843009213693952
-    high_bits_of_mul_by_powers_of_2_threshold dq 9223372036854775808
-
-
-; display/i $pc
+    _library.high_bits_of_mul_by_powers_of_5_threshold dq 2305843009213693952
+    _library.high_bits_of_mul_by_powers_of_2_threshold dq 9223372036854775808

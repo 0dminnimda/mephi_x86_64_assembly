@@ -650,6 +650,9 @@ strlen:
     ret
 
 
+include 'library_float_to_string.asm'
+
+
 segment readable writable
     _library_initial_rcx dq 0
 
