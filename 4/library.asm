@@ -175,12 +175,12 @@ segment readable executable
 print_int:  ; rax number input
     push rax rdi rsi
 
-    lea rdi, [_library_number_string_buffer]
+    lea rdi, [_library.number_string_buffer]
     call string_from_int
 
-    mov [_library_number_string_buffer + rsi], endl
+    mov [_library.number_string_buffer + rsi], endl
     inc rsi
-    print_str _library_number_string_buffer, rsi
+    print_str _library.number_string_buffer, rsi
 
     pop rsi rdi rax
 
@@ -190,10 +190,10 @@ print_int:  ; rax number input
 print_int_no_new_line:  ; rax number input
     push rax rdi rsi
 
-    lea rdi, [_library_number_string_buffer]
+    lea rdi, [_library.number_string_buffer]
     call string_from_int
 
-    print_str _library_number_string_buffer, rsi
+    print_str _library.number_string_buffer, rsi
 
     pop rsi rdi rax
 
@@ -203,12 +203,12 @@ print_int_no_new_line:  ; rax number input
 print_signed_int:  ; rax number input
     push rax rdi rsi
 
-    lea rdi, [_library_number_string_buffer]
+    lea rdi, [_library.number_string_buffer]
     call string_from_signed_int
 
-    mov [_library_number_string_buffer + rsi], endl
+    mov [_library.number_string_buffer + rsi], endl
     inc rsi
-    print_str _library_number_string_buffer, rsi
+    print_str _library.number_string_buffer, rsi
 
     pop rsi rdi rax
 
@@ -218,11 +218,11 @@ print_signed_int:  ; rax number input
 print_signed_int_no_new_line:  ; rax number input
     push rax rdi rsi
 
-    lea rdi, [_library_number_string_buffer]
+    lea rdi, [_library.number_string_buffer]
 
     call string_from_signed_int
 
-    print_str _library_number_string_buffer, rsi
+    print_str _library.number_string_buffer, rsi
 
     pop rsi rdi rax
 
@@ -232,9 +232,9 @@ print_signed_int_no_new_line:  ; rax number input
 read_signed_int:  ; rax number output
     push rdi rsi
 
-    input _library_buff, _library_buff.len
+    input _library.buff, _library.buff.len
 
-    lea rdi, [_library_buff]
+    lea rdi, [_library.buff]
     mov rsi, rax
     call signed_int_from_string
 
@@ -246,9 +246,9 @@ read_signed_int:  ; rax number output
 read_int:  ; rax number output
     push rdi rsi
 
-    input _library_buff, _library_buff.len
+    input _library.buff, _library.buff.len
 
-    lea rdi, [_library_buff]
+    lea rdi, [_library.buff]
     mov rsi, rax
     call int_from_string
 
@@ -302,7 +302,7 @@ signed_int_from_string:  ; inout rdi buff, inout rsi buff_length, returns rax nu
 
     call int_from_string
 
-    and rax, [_library_64bit_non_sign_bits]  ; clear sign bit
+    and rax, [_library.64bit_non_sign_bits]  ; clear sign bit
 
     test r8, r8
     jz signed_int_from_string.not_signed
@@ -591,7 +591,7 @@ macro get_arg_and_env arg_len, arg_ptr, env_len, env_ptr
 ; loads into specified memory locations
 ; have to be called as a first thing in the program entry point
 {
-    mov [_library_initial_rcx], rcx  ; push rcx without altering the stack
+    mov [_library.initial_rcx], rcx  ; push rcx without altering the stack
 
     mov rcx, [rsp]
     mov [arg_len], rcx
@@ -619,7 +619,7 @@ macro get_arg_and_env arg_len, arg_ptr, env_len, env_ptr
 
   get_arg_and_env.loop_end:
 
-    mov rcx, [_library_initial_rcx]  ; pop rcx without altering the stack
+    mov rcx, [_library.initial_rcx]  ; pop rcx without altering the stack
 }
 
 
@@ -654,7 +654,7 @@ include 'library_float_to_string.asm'
 
 
 segment readable writable
-    _library_initial_rcx dq 0
+    _library.initial_rcx dq 0
 
     arg_len dq 0
     arg_ptr dq 0
@@ -662,8 +662,8 @@ segment readable writable
     env_len dq 0
     env_ptr dq 0
 
-    _library_buff rb 1024
-    _library_buff.len = $-_library_buff
+    _library.buff rb 1024
+    _library.buff.len = $-_library.buff
 
-    _library_number_string_buffer rb 32
-    _library_64bit_non_sign_bits dq 0x7FFFFFFFFFFFFFFF
+    _library.number_string_buffer rb 32
+    _library.64bit_non_sign_bits dq 0x7FFFFFFFFFFFFFFF
