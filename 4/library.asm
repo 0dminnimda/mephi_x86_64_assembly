@@ -117,6 +117,12 @@ macro jump_if_positive thing, target
     jge target
 }
 
+macro jump_if_not_positive thing, target
+{
+    test thing, thing
+    jl target
+}
+
 
 macro negate_2s_complement thing
 {
