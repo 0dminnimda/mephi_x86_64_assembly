@@ -97,7 +97,7 @@ high_bits_of_mul_by_powers_of_2:  ; rax input with number, rbx input with power,
     ret
 
 
-get_double_decompossion:  ; rax input with float loaded, rax output mantissa, rbx output sign, rdx output exponent
+get_double_decomposition:  ; rax input with float loaded, rax output mantissa, rbx output sign, rdx output exponent
     ; get sign - long >> 63
     push rax
     shr rax, 63
@@ -113,8 +113,8 @@ get_double_decompossion:  ; rax input with float loaded, rax output mantissa, rb
     pop rax
 
     ; get mantissa - 0x10000000000000 + (long & 0xfffffffffffff)
-    and rax, qword [_library.get_double_decompossion_mantissa_and]
-    add rax, qword [_library.get_double_decompossion_mantissa_one]
+    and rax, qword [_library.get_double_decomposition_mantissa_and]
+    add rax, qword [_library.get_double_decomposition_mantissa_one]
 
     ret
 
@@ -124,7 +124,7 @@ string_from_double:  ; in rax: dobule bits, in rdi: buff, out rsi: characters wr
 
     xor rsi, rsi
 
-    call get_double_decompossion
+    call get_double_decomposition
 
     test rbx, rbx  ; is sign negative (!= 0)?
     jz string_from_double_handled_sign
@@ -227,8 +227,8 @@ print_dobule:  ; rax input dobule bits
 
 
 segment readable writable
-    _library.get_double_decompossion_mantissa_and dq 0xfffffffffffff
-    _library.get_double_decompossion_mantissa_one dq 0x10000000000000
+    _library.get_double_decomposition_mantissa_and dq 0xfffffffffffff
+    _library.get_double_decomposition_mantissa_one dq 0x10000000000000
 
     _library.high_bits_of_mul_by_powers_of_5_threshold dq 2305843009213693952
     _library.high_bits_of_mul_by_powers_of_2_threshold dq 9223372036854775808
