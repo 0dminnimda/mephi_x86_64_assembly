@@ -168,9 +168,25 @@ macro jump_if_white_space char, target
     je target
 }
 
+macro SEGMENT_FOR_CODE
+{
+if IS_FINAL_EXE = 0
+  section '.text' executable
+else
+  segment readable executable
+end if
+}
 
-segment readable executable
+macro SEGMENT_FOR_DATA
+{
+if IS_FINAL_EXE = 0
+  section '.data' writable
+else
+  segment readable writable
+end if
+}
 
+SEGMENT_FOR_CODE
 
 print_int:  ; rax number input
     push rax rdi rsi
@@ -653,7 +669,8 @@ strlen:
 include 'library_float_to_string.asm'
 
 
-segment readable writable
+SEGMENT_FOR_DATA
+
     _library.initial_rcx dq 0
 
     arg_len dq 0

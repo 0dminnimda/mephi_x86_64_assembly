@@ -26,7 +26,7 @@
 ; overall it seems like if we want the full and raw number we have to use arbitary precision arithmetic
 
 
-segment readable executable
+SEGMENT_FOR_CODE
 
 
 high_bits_of_mul_by_powers_of_5:  ; in rax: with number, in rbx: with power, out rax: with result, out rbx: 10th power
@@ -226,7 +226,8 @@ print_dobule:  ; rax input dobule bits
     ret
 
 
-segment readable writable
+SEGMENT_FOR_DATA
+
     _library.get_double_decomposition_mantissa_and dq 0xfffffffffffff
     _library.get_double_decomposition_mantissa_one dq 0x10000000000000
 
