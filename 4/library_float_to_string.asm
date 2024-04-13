@@ -148,6 +148,32 @@ string_from_double:  ; in rax: dobule bits, in rdi: buff, out rsi: characters wr
         mov byte [rdi + rsi], 0
 
         jmp string_from_double.end
+    .elseif rax = [_library.double_infinity]
+        mov byte [rdi + rsi], '+'
+        inc rsi
+        mov byte [rdi + rsi], 'I'
+        inc rsi
+        mov byte [rdi + rsi], 'N'
+        inc rsi
+        mov byte [rdi + rsi], 'F'
+        inc rsi
+        ; put \0 at the end just in case
+        mov byte [rdi + rsi], 0
+
+        jmp string_from_double.end
+    .elseif rax = [_library.double_minus_infinity]
+        mov byte [rdi + rsi], '-'
+        inc rsi
+        mov byte [rdi + rsi], 'I'
+        inc rsi
+        mov byte [rdi + rsi], 'N'
+        inc rsi
+        mov byte [rdi + rsi], 'F'
+        inc rsi
+        ; put \0 at the end just in case
+        mov byte [rdi + rsi], 0
+
+        jmp string_from_double.end
     .endif
 
     call get_double_decomposition
@@ -262,6 +288,8 @@ SEGMENT_FOR_DATA
 
     _library.double_zero dq 0.0
     _library.double_minus_zero dq -0.0
+    _library.double_infinity dq 0x7ff0000000000000
+    _library.double_minus_infinity dq 0xfff0000000000000
 
     _library.get_double_decomposition_mantissa_and dq 0xfffffffffffff
     _library.get_double_decomposition_mantissa_one dq 0x10000000000000
