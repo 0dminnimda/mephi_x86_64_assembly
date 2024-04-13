@@ -66,11 +66,6 @@ hyperbolic_sin:  ; inout xmm0: argument and result, in xmm1: prescition
     push rax
 
     abs_of_double xmm1
-    ; push rax
-    ;     pushsd xmm1
-    ;     pop rax
-    ;     call print_dobule
-    ; pop rax
 
     movsd [hyperbolic_sin.precision], xmm1
 
@@ -181,7 +176,6 @@ SEGMENT_FOR_DATA
 
     hyperbolic_sin.pow_2 dq 0.0
     hyperbolic_sin.precision dq 0.0
-    ; hyperbolic_sin.last_change dq 0.0
 
 
 ; display/i $pc
