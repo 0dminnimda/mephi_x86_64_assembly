@@ -64,7 +64,9 @@ hyperbolic_sin:  ; inout xmm0: argument and result, in xmm1: prescition
     pushsd xmm1
     pushsd xmm2
     push rax
+    pushsd xmm0  ; saved x value
 
+    abs_of_double xmm0
     abs_of_double xmm1
 
     movsd [hyperbolic_sin.precision], xmm1
@@ -77,11 +79,8 @@ hyperbolic_sin:  ; inout xmm0: argument and result, in xmm1: prescition
 
     movsd xmm1, xmm0
 
-    pushsd xmm3
     .while 1
-        movsd xmm3, xmm1
-        abs_of_double xmm3
-        ucomisd xmm3, [hyperbolic_sin.precision]
+        ucomisd xmm1, [hyperbolic_sin.precision]
         jbe __ENDW
 
         mulsd xmm1, [hyperbolic_sin.pow_2]
@@ -93,7 +92,9 @@ hyperbolic_sin:  ; inout xmm0: argument and result, in xmm1: prescition
 
         addsd xmm0, xmm1
     .endw
-    popsd xmm3
+
+    popsd xmm1  ; saved x value
+    copy_sign_of_double_destructive xmm1, xmm0
 
     pop rax
     popsd xmm2
