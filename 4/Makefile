@@ -36,3 +36,11 @@ test:
 	printf " -2.5\n1e-3" | ./$(EXE_NAME)
 	#
 	printf " -2.5\n-1e-3" | ./$(EXE_NAME)
+	#
+	printf " 1000\n0" | ./$(EXE_NAME)
+	#
+	printf " -1000\n0" | ./$(EXE_NAME)
+	#
+	printf " 0\n0" | ./$(EXE_NAME)
+	#
+	printf " -0\n0" | ./$(EXE_NAME)
