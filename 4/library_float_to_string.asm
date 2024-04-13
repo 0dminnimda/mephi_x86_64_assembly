@@ -216,12 +216,12 @@ string_from_double:  ; in rax: dobule bits, in rdi: buff, out rsi: characters wr
 print_dobule:  ; rax input dobule bits
     push rax rdi rsi
 
-    lea rdi, [_library.number_string_buffer]
+    lea rdi, [_library.float_number_string_buffer]
     call string_from_double
 
-    mov [_library.number_string_buffer + rsi], endl
+    mov [_library.float_number_string_buffer + rsi], endl
     inc rsi
-    print_str _library.number_string_buffer, rsi
+    print_str _library.float_number_string_buffer, rsi
 
     pop rsi rdi rax
 
@@ -229,6 +229,8 @@ print_dobule:  ; rax input dobule bits
 
 
 SEGMENT_FOR_DATA
+
+    _library.float_number_string_buffer rb 40
 
     _library.get_double_decomposition_mantissa_and dq 0xfffffffffffff
     _library.get_double_decomposition_mantissa_one dq 0x10000000000000
