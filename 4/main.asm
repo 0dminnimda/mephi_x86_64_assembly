@@ -1,8 +1,8 @@
 IS_FINAL_EXE = 0
 
-format ELF64
-
 include 'library.asm'
+
+FORMAT_ELF
 
 extrn printf
 extrn getpid

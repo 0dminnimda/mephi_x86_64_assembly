@@ -168,6 +168,15 @@ macro jump_if_white_space char, target
     je target
 }
 
+macro FORMAT_ELF
+{
+if IS_FINAL_EXE = 0
+  format ELF64 executable 3
+else
+  format ELF64
+end if
+}
+
 macro SEGMENT_FOR_CODE
 {
 if IS_FINAL_EXE = 0
