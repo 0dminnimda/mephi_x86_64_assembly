@@ -168,6 +168,20 @@ macro jump_if_white_space char, target
     je target
 }
 
+; XXX: maybe just update .if macro instead?
+; but then you have to provide those macros
+; and cannot rely on the usedr defined ones (is it bad?)
+
+; define EQUAL? (ZERO?)
+; define ABOVE_OR_EQUAL? (~ CARRY?)
+; define ABOVE? (ABOVE_OR_EQUAL? & ~ ZERO?)
+; define BELOW? (CARRY?)
+; define BELOW_OR_EQUAL? (BELOW? | ZERO?)
+; define GREATER_OR_EQUAL? ((SIGN? & OVERFLOW?) | (~ SIGN? & ~ OVERFLOW?))
+; define GREATER? (~ ZERO? & GREATER_OR_EQUAL?)
+; define LESS? ((SIGN? & ~ OVERFLOW?) | (SIGN? & ~ OVERFLOW?))
+; define LESS_OR_EQUAL? (LESS? | ZERO?)
+
 macro pushsd reg
 {
     sub rsp, 8
