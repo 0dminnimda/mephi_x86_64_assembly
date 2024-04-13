@@ -69,7 +69,23 @@ hyperbolic_sin:  ; inout xmm0: argument and result, in xmm1: prescition
     abs_of_double xmm0
     abs_of_double xmm1
 
-    movsd [hyperbolic_sin.precision], xmm1
+    movsd xmm2, [double_one]
+    divsd xmm2, xmm1
+    ucomisd xmm2, xmm1
+    .if ABOVE?
+        movsd [hyperbolic_sin.bigg_precision], xmm2
+        movsd [hyperbolic_sin.smol_precision], xmm1
+    .else
+        movsd [hyperbolic_sin.bigg_precision], xmm1
+        movsd [hyperbolic_sin.smol_precision], xmm2
+    .endif
+
+    ; push rax
+    ;     mov rax, [hyperbolic_sin.smol_precision] 
+    ;     call print_dobule
+    ;     mov rax, [hyperbolic_sin.bigg_precision] 
+    ;     call print_dobule
+    ; pop rax
 
     mov rax, 1
     movsd xmm1, xmm0
@@ -80,8 +96,10 @@ hyperbolic_sin:  ; inout xmm0: argument and result, in xmm1: prescition
     movsd xmm1, xmm0
 
     .while 1
-        ucomisd xmm1, [hyperbolic_sin.precision]
+        ucomisd xmm1, [hyperbolic_sin.smol_precision]
         jbe __ENDW
+        ucomisd xmm1, [hyperbolic_sin.bigg_precision]
+        jae __ENDW
 
         mulsd xmm1, [hyperbolic_sin.pow_2]
         repeat 2
@@ -89,6 +107,14 @@ hyperbolic_sin:  ; inout xmm0: argument and result, in xmm1: prescition
             cvtsi2sd xmm2, rax
             divsd xmm1, xmm2
         end repeat
+
+if defined PRINT_STEPS
+        push rax
+            pushsd xmm1
+            pop rax
+            call print_dobule
+        pop rax
+end if
 
         addsd xmm0, xmm1
     .endw
@@ -176,7 +202,9 @@ SEGMENT_FOR_DATA
     ; flt dq 5.6e+307
 
     hyperbolic_sin.pow_2 dq 0.0
-    hyperbolic_sin.precision dq 0.0
+    double_one dq 1.0
+    hyperbolic_sin.smol_precision dq 0.0
+    hyperbolic_sin.bigg_precision dq 0.0
 
 
 ; display/i $pc
