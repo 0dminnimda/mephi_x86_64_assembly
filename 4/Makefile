@@ -5,7 +5,7 @@ prep_executable = $(eval $(1) := $(shell bash ../prep_exec.sh $(2)))
 .PHONY: com
 com:
 	fasm main.asm main.obj
-	ld -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o $(EXE_NAME) -lc main.obj
+	ld -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o $(EXE_NAME) -lc -lm main.obj
 
 .PHONY: com_dr
 com_dr:
