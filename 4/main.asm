@@ -5,35 +5,43 @@ include 'library.asm'
 SEGMENT_FOR_CODE
 
 extrn printf
+extrn scanf
 extrn getpid
 extrn _exit
 
 
+
+
 public _start
 _start:
-    ; push rdi rdi
-
-    call getpid
-
-    mov	rdi, fmt
-    mov	rsi, message
-    mov	rdx, rax
-    mov	rax, 0
+    mov	rdi, str_fmt
+    mov	rsi, enter_mat_size_str
+    xor	rax, rax
     call printf
 
-    ; pop rdi rdi
+    mov rdi, input_double_fmt
+    mov rsi, flt
+    call scanf
 
     mov rax, [flt]
-    call print_dobule
+    mov rdi, _library.float_number_string_buffer
+    call string_from_double
+    mov	rsi, rdi
+    mov	rdi, read_number_fmt
+    xor	rax, rax
+    call printf
 
     mov rdi, 10
     call _exit
 
 
 SEGMENT_FOR_DATA
+    enter_mat_size_str db 'Enter double: ', 0
 
-    message db "Hello, World", 0
-    fmt db "%s %d", 0xA, 0
+    str_fmt db '%s', 0
+    read_number_fmt db 'Read number: %s', endl, 0
+
+    input_double_fmt db '%lf'
 
     debug_str db 'DEBUG: '
     debug_str.len = $-debug_str
@@ -44,12 +52,12 @@ SEGMENT_FOR_DATA
     quote_str db '"'
     quote_str.len = $-quote_str
 
-    new_line_str db 0xA
+    new_line_str db endl
     new_line_str.len = $-new_line_str
 
     ; flt dq -3.14
-    ; flt dq 0.0
-    flt dq -0.0
+    flt dq 0.0
+    ; flt dq -0.0
     ; flt dq -0.314
     ; flt dq -0.0314
     ; flt dq -0.00314
