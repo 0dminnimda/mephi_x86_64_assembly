@@ -136,6 +136,18 @@ macro negate_double reg
 }
 
 
+macro abs_of_double reg
+{
+    andpd reg, dqword [_library.double_non_sign_bit_mask]
+}
+
+
+macro neg_abs_of_double reg
+{
+    orpd reg, dqword [_library.double_sign_bit_mask]
+}
+
+
 macro zero_out reg
 {
     xor reg, reg
@@ -720,3 +732,5 @@ SEGMENT_FOR_DATA
     ; we need two of those because xorpd needs pointer to 128 bits of memory to xor with 128 bits of xmm
     _library.double_sign_bit_mask          dq 0x8000000000000000
     _library.double_sign_bit_mask_continue dq 0x8000000000000000
+    _library.double_non_sign_bit_mask          dq 0x7fffffffffffffff
+    _library.double_non_sign_bit_mask_continue dq 0x7fffffffffffffff
