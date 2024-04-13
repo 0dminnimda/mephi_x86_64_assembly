@@ -20,3 +20,14 @@ com_dr:
 run:
 	$(call prep_executable, EXEC, $(EXE_NAME))
 	qemu-x86_64 $(EXEC)
+
+.PHONY: test
+test:
+	printf "2.5\n1e-3" | ./$(EXE_NAME)
+	#
+	printf "2.5\n-1e-3" | ./$(EXE_NAME)
+	#
+	printf " -2.5\n1e-3" | ./$(EXE_NAME)
+	#
+	printf " -2.5\n-1e-3" | ./$(EXE_NAME)
+
