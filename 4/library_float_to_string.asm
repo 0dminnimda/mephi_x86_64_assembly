@@ -206,6 +206,8 @@ string_from_double:  ; in rax: dobule bits, in rdi: buff, out rsi: characters wr
         add rsi, rax
     pop rdi rax
 
+    ; string_from_signed_int already have put \0 at the end
+
     pop rdx rbx rax rdi
 
     ret

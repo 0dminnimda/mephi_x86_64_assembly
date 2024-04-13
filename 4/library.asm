@@ -558,6 +558,10 @@ string_from_int:  ; rax number, rdi buff, rsi characters written
     pop r9 r8
 
   string_from_int.end:
+
+    ; put \0 at the end just in case
+    mov byte [rdi + rsi], 0
+
     pop rcx rdx rax
 
     ret
