@@ -2,13 +2,12 @@ IS_FINAL_EXE = 0
 
 include 'library.asm'
 
-FORMAT_ELF
+SEGMENT_FOR_CODE
 
 extrn printf
 extrn getpid
 extrn _exit
 
-SEGMENT_FOR_CODE
 
 public _start
 _start:

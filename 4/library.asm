@@ -171,9 +171,9 @@ macro jump_if_white_space char, target
 macro FORMAT_ELF
 {
 if IS_FINAL_EXE = 0
-  format ELF64 executable 3
-else
   format ELF64
+else
+  format ELF64 executable 3
 end if
 }
 
@@ -194,6 +194,8 @@ else
   segment readable writable
 end if
 }
+
+FORMAT_ELF
 
 SEGMENT_FOR_CODE
 
