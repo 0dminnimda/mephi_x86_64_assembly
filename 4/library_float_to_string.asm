@@ -124,6 +124,32 @@ string_from_double:  ; in rax: dobule bits, in rdi: buff, out rsi: characters wr
 
     xor rsi, rsi
 
+    .if rax = [_library.double_zero]
+        mov byte [rdi + rsi], '0'
+        inc rsi
+        mov byte [rdi + rsi], '.'
+        inc rsi
+        mov byte [rdi + rsi], '0'
+        inc rsi
+        ; put \0 at the end just in case
+        mov byte [rdi + rsi], 0
+
+        jmp string_from_double.end
+    .elseif rax = [_library.double_minus_zero]
+        mov byte [rdi + rsi], '-'
+        inc rsi
+        mov byte [rdi + rsi], '0'
+        inc rsi
+        mov byte [rdi + rsi], '.'
+        inc rsi
+        mov byte [rdi + rsi], '0'
+        inc rsi
+        ; put \0 at the end just in case
+        mov byte [rdi + rsi], 0
+
+        jmp string_from_double.end
+    .endif
+
     call get_double_decomposition
 
     test rbx, rbx  ; is sign negative (!= 0)?
@@ -208,6 +234,8 @@ string_from_double:  ; in rax: dobule bits, in rdi: buff, out rsi: characters wr
 
     ; string_from_signed_int already have put \0 at the end
 
+  string_from_double.end:
+
     pop rdx rbx rax rdi
 
     ret
@@ -231,6 +259,9 @@ print_dobule:  ; rax input dobule bits
 SEGMENT_FOR_DATA
 
     _library.float_number_string_buffer rb 40
+
+    _library.double_zero dq 0.0
+    _library.double_minus_zero dq -0.0
 
     _library.get_double_decomposition_mantissa_and dq 0xfffffffffffff
     _library.get_double_decomposition_mantissa_one dq 0x10000000000000
