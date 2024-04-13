@@ -126,8 +126,7 @@ macro jump_if_not_positive thing, target
 
 macro negate_2s_complement thing
 {
-    not thing
-    inc thing
+    neg thing
 }
 
 
