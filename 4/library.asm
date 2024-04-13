@@ -148,6 +148,37 @@ macro neg_abs_of_double reg
 }
 
 
+macro copy_sign_destructive reg1, reg2_or_mem   ; will destroy the value of reg1
+{
+    and reg1, [_library.64bit_sign_bits]
+    or reg2_or_mem, reg1
+}
+
+macro copy_sign reg1, reg2_or_mem
+{
+    push reg1
+    copy_sign reg1, reg2_or_mem
+    pop reg1
+}
+
+
+macro copy_sign_of_double_destructive reg1, reg2_or_mem   ; will destroy the value of reg1
+{
+    andpd reg1, dqword [_library.double_sign_bit_mask]
+    orpd reg2_or_mem, reg1
+}
+
+macro copy_sign_of_double reg1, reg2  ; probably slower than copy_sign_of_double_destructive
+{
+    ucomisd reg1, [_library.double_zero]
+    .if BELOW?
+        neg_abs_of_double reg2
+    .else
+        abs_of_double reg2
+    .endif
+}
+
+
 macro zero_out reg
 {
     xor reg, reg
@@ -727,9 +758,11 @@ SEGMENT_FOR_DATA
     _library.buff.len = $-_library.buff
 
     _library.number_string_buffer rb 32
+    _library.64bit_sign_bits dq 0x8000000000000000
     _library.64bit_non_sign_bits dq 0x7FFFFFFFFFFFFFFF
 
-    ; we need two of those because xorpd needs pointer to 128 bits of memory to xor with 128 bits of xmm
+    ; we need two of those because xorpd needs pointer to 128 bits of memory to xor with 128 bits of xm
+    _library._double_sign_bit_mask_align dq 0  ; also this needs to be 128-bit ailgned, thus this thing
     _library.double_sign_bit_mask          dq 0x8000000000000000
     _library.double_sign_bit_mask_continue dq 0x8000000000000000
     _library.double_non_sign_bit_mask          dq 0x7fffffffffffffff
