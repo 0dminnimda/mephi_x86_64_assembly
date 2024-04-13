@@ -7,7 +7,7 @@ SEGMENT_FOR_CODE
 extrn printf
 extrn scanf
 extrn getpid
-extrn _exit
+extrn '_exit' as exit
 
 
 
@@ -31,8 +31,8 @@ _start:
     xor	rax, rax
     call printf
 
-    mov rdi, 10
-    call _exit
+    mov rdi, 0
+    call exit
 
 
 SEGMENT_FOR_DATA
