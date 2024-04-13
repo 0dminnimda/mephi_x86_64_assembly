@@ -361,6 +361,51 @@ macro define_JNCONDEL
       match =COND =PARITY?, COND c
       \\\{
 	  jnp label
+    define COND
+      \\\}
+      match =COND =EQUAL?, COND c
+      \\\{
+    jne label
+    define COND
+      \\\}
+      match =COND =ABOVE_OR_EQUAL?, COND c
+      \\\{
+    jnae label
+    define COND
+      \\\}
+      match =COND =ABOVE?, COND c
+      \\\{
+    jna label
+    define COND
+      \\\}
+      match =COND =BELOW?, COND c
+      \\\{
+    jnb label
+    define COND
+      \\\}
+      match =COND =BELOW_OR_EQUAL?, COND c
+      \\\{
+    jnbe label
+    define COND
+      \\\}
+      match =COND =GREATER_OR_EQUAL?, COND c
+      \\\{
+    jnge label
+    define COND
+      \\\}
+      match =COND =GREATER?, COND c
+      \\\{
+    jng label
+    define COND
+      \\\}
+      match =COND =LESS?, COND c
+      \\\{
+    jnl label
+    define COND
+      \\\}
+      match =COND =LESS_OR_EQUAL?, COND c
+      \\\{
+    jnle label
 	  define COND
       \\\}
       match =COND v, COND c
@@ -481,6 +526,51 @@ macro define_JCONDEL
       match =COND =PARITY?, COND c
       \\\{
 	  jp label
+        define COND
+      \\\}
+      match =COND =EQUAL?, COND c
+      \\\{
+    je label
+    define COND
+      \\\}
+      match =COND =ABOVE_OR_EQUAL?, COND c
+      \\\{
+    jae label
+    define COND
+      \\\}
+      match =COND =ABOVE?, COND c
+      \\\{
+    ja label
+    define COND
+      \\\}
+      match =COND =BELOW?, COND c
+      \\\{
+    jb label
+    define COND
+      \\\}
+      match =COND =BELOW_OR_EQUAL?, COND c
+      \\\{
+    jbe label
+    define COND
+      \\\}
+      match =COND =GREATER_OR_EQUAL?, COND c
+      \\\{
+    jge label
+    define COND
+      \\\}
+      match =COND =GREATER?, COND c
+      \\\{
+    jg label
+    define COND
+      \\\}
+      match =COND =LESS?, COND c
+      \\\{
+    jl label
+    define COND
+      \\\}
+      match =COND =LESS_OR_EQUAL?, COND c
+      \\\{
+    jle label
 	  define COND
       \\\}
       match =COND v, COND c
