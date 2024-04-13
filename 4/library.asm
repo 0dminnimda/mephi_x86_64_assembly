@@ -168,6 +168,18 @@ macro jump_if_white_space char, target
     je target
 }
 
+macro pushsd reg
+{
+    sub rsp, 8
+    movsd qword [rsp], reg
+}
+
+macro popsd reg
+{
+    movsd reg, qword [rsp]
+    add rsp, 8
+}
+
 macro FORMAT_ELF
 {
 if IS_FINAL_EXE = 0
