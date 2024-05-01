@@ -67,6 +67,7 @@ int main(int argc, char **argv) {
         printf("Error loading image\n");
         return 1;
     }
+    printf("Loaded image '%s', width: %d, height: %d, channels: %d\n", argv[1], width, height, channels);
 
     unsigned char *result_img = (unsigned char *)malloc(width * height * channels);
 
