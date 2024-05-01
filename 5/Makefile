@@ -7,10 +7,10 @@ com: stb_image.h stb_image_write.h
 	# clang 
 
 stb_image.h:
-	wget -O stb_image.h $(STB_URL)
+	curl -o stb_image.h -L $(STB_URL)
 
 stb_image_write.h:
-	wget -O stb_image_write.h $(STB_WRITE_URL)
+	curl -o stb_image_write.h -L $(STB_WRITE_URL)
 
 clean:
 	rm -f $(PROGRAM_NAME) stb_image.h stb_image_write.h
