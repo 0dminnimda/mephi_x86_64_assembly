@@ -4,7 +4,7 @@ STB_WRITE_URL = https://raw.githubusercontent.com/nothings/stb/master/stb_image_
 .PHONY: com
 com: stb_image.h stb_image_write.h
 	# fasm asm_impl.asm asm_impl.obj
-	clang main.c -o main.out
+	clang main.c -o main.out -D PROCESSING_IMPLEMENTATION
 
 stb_image.h:
 	curl -o stb_image.h -L $(STB_URL)

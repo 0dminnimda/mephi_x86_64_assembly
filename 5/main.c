@@ -10,9 +10,29 @@
 
 typedef unsigned int uint;
 
-void process(unsigned char *img, uint width, uint height, uint channels, uint new_width, uint new_height);
+void process(unsigned char *input, uint width, uint height, uint channels, unsigned char *output, uint new_width, uint new_height);
 
 #ifdef PROCESSING_IMPLEMENTATION
+void process(unsigned char *input, uint width, uint height, uint channels, unsigned char *output, uint new_width, uint new_height) {
+    double x_ratio = (double)width / new_width;
+    double y_ratio = (double)height / new_height;
+
+    uint output_index = 0;
+    
+    for (uint y = 0; y < new_height; ++y) {
+        uint input_y = (uint)((double)y * y_ratio);
+
+        for (uint x = 0; x < new_width; ++x) {
+            uint input_x = (uint)((double)x * x_ratio);
+
+            uint input_index = (input_y * width + input_x) * channels;
+
+            for (uint c = 0; c < channels; ++c) {
+                output[output_index++] = input[input_index + c];
+            }
+        }
+    }
+}
 
 #endif
 
@@ -69,11 +89,12 @@ int main(int argc, char **argv) {
     }
     printf("Loaded image '%s', width: %d, height: %d, channels: %d\n", argv[1], width, height, channels);
 
-    unsigned char *result_img = (unsigned char *)malloc(width * height * channels);
+    unsigned char *result_img = (unsigned char *)malloc(new_width * new_height * channels * sizeof(char));
 
-    memcpy(result_img, img, width * height * channels);
+    process(img, width, height, channels, result_img, new_width, new_height);
 
-    stbi_write_jpg(argv[2], width, height, channels, img, 100);
+    stbi_write_jpg(argv[2], new_width, new_height, channels, result_img, 100);
+    printf("Written image '%s', width: %d, height: %d, channels: %d\n", argv[2], new_width, new_height, channels);
 
     stbi_image_free(img);
     free(result_img);
