@@ -15,13 +15,13 @@ process:  ; inout rdi: input, in rsi: width, in rdx: height, in rcx: channels, i
     push r12 r13 r14 r15
 
 ;   double x_ratio = (double)width / new_width;
-    cvtsi2sd xmm1, rsi
-    cvtsi2sd xmm3, r9
-    divsd xmm1, xmm3
+    cvtsi2sd xmm0, rsi
+    cvtsi2sd xmm2, r9
+    divsd xmm0, xmm2
 ;   double y_ratio = (double)height / new_height;
-    cvtsi2sd xmm2, rdx
-    cvtsi2sd xmm3, r10
-    divsd xmm2, xmm3
+    cvtsi2sd xmm1, rdx
+    cvtsi2sd xmm2, r10
+    divsd xmm1, xmm2
 
 ;   output += new_height * new_width * channels;
     mov rax, r10
@@ -35,9 +35,9 @@ process:  ; inout rdi: input, in rsi: width, in rdx: height, in rcx: channels, i
     .while signed r14 >= 0
 
 ;       uint input_y = (uint)((double)y * y_ratio);
-        cvtsi2sd xmm3, r14
-        mulsd xmm3, xmm2
-        cvttsd2si r11, xmm3
+        cvtsi2sd xmm2, r14
+        mulsd xmm2, xmm1
+        cvttsd2si r11, xmm2
 
 ;       for (long x = new_width - 1; x >= 0; --x) {
         mov r15, r9
@@ -45,9 +45,9 @@ process:  ; inout rdi: input, in rsi: width, in rdx: height, in rcx: channels, i
         .while signed r15 >= 0
 
 ;           uint input_x = (uint)((double)x * x_ratio);
-            cvtsi2sd xmm3, r15
-            mulsd xmm3, xmm1
-            cvttsd2si r12, xmm3
+            cvtsi2sd xmm2, r15
+            mulsd xmm2, xmm0
+            cvttsd2si r12, xmm2
 
 ;           unsigned char *part_input = input + (input_y * width + input_x + 1) * channels;
             mov rax, r11
