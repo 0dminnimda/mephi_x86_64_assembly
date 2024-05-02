@@ -11,7 +11,7 @@ process:  ; inout rdi: input, in rsi: width, in rdx: height, in rcx: channels, i
     function_save_stack
 
     ; pushsd xmm1 xmm2 xmm3
-    push r12 r13
+    push r12 r13 r14 r15
 
 ;   double x_ratio = (double)width / new_width;
     cvtsi2sd xmm1, rsi
@@ -28,21 +28,22 @@ process:  ; inout rdi: input, in rsi: width, in rdx: height, in rcx: channels, i
     mul rcx
 
 ;   for (long y = new_height - 1; y >= 0; --y) {
-    dec r10
-    .while signed r10 >= 0
+    mov r14, r10
+    dec r14
+    .while signed r14 >= 0
 
 ;       uint input_y = (uint)((double)y * y_ratio);
-        cvtsi2sd xmm3, r10
+        cvtsi2sd xmm3, r14
         mulsd xmm3, xmm2
         cvtsd2si r11, xmm3
 
 ;       for (long x = new_width - 1; x >= 0; --x) {
-        push r9
-        dec r9
-        .while signed r9 >= 0
+        mov r15, r9
+        dec r15
+        .while signed r15 >= 0
 
 ;           uint input_x = (uint)((double)x * x_ratio);
-            cvtsi2sd xmm3, r9
+            cvtsi2sd xmm3, r15
             mulsd xmm3, xmm1
             cvtsd2si r12, xmm3
 
@@ -50,7 +51,7 @@ process:  ; inout rdi: input, in rsi: width, in rdx: height, in rcx: channels, i
             push rax
                 mov rax, r11
                 mul rsi
-                lea rax, [rax + r12 + 1]
+                lea rax, [rax + r12]
                 mul rcx
                 mov r13, rax
             pop rax
@@ -72,17 +73,15 @@ process:  ; inout rdi: input, in rsi: width, in rdx: height, in rcx: channels, i
             pop rcx
 
 ;       }
-            dec r9
+            dec r15
         .endw
-        pop r9
-
 
 ;   }
-        dec r10
+        dec r14
     .endw
         
 
-    pop r13 r12
+    pop r15 r14 r13 r12
     ; popsd xmm3 xmm2 xmm1
 
     function_load_stack
