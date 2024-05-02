@@ -18,18 +18,18 @@ void process(unsigned char *input, uint width, uint height, uint channels, unsig
     double x_ratio = (double)width / new_width;
     double y_ratio = (double)height / new_height;
 
-    uint output_index = new_height * new_width * channels;
-    
+    output += new_height * new_width * channels;
+
     for (long y = new_height - 1; y >= 0; --y) {
         uint input_y = (uint)((double)y * y_ratio);
 
         for (long x = new_width - 1; x >= 0; --x) {
             uint input_x = (uint)((double)x * x_ratio);
 
-            uint input_index = (input_y * width + input_x + 1) * channels;
+            unsigned char *part_input = input + (input_y * width + input_x + 1) * channels;
 
             for (short c = channels - 1; c >= 0; --c) {
-                output[--output_index] = input[--input_index];
+                *(--output) = *(--part_input);
             }
         }
     }

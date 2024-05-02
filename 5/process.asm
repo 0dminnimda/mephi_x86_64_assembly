@@ -22,10 +22,11 @@ process:  ; inout rdi: input, in rsi: width, in rdx: height, in rcx: channels, i
     cvtsi2sd xmm3, r10
     divsd xmm2, xmm3
 
-;   uint output_index = new_height * new_width * channels;
+;   output += new_height * new_width * channels;
     mov rax, r10
     mul r9
     mul rcx
+    add r8, rax
 
 ;   for (long y = new_height - 1; y >= 0; --y) {
     mov r14, r10
@@ -47,25 +48,24 @@ process:  ; inout rdi: input, in rsi: width, in rdx: height, in rcx: channels, i
             mulsd xmm3, xmm1
             cvtsd2si r12, xmm3
 
-;           uint input_index = (input_y * width + input_x + 1) * channels;
-            push rax
-                mov rax, r11
-                mul rsi
-                lea rax, [rax + r12]
-                mul rcx
-                mov r13, rax
-            pop rax
+;           unsigned char *part_input = input + (input_y * width + input_x + 1) * channels;
+            mov rax, r11
+            mul rsi
+            lea rax, [rax + r12]
+            mul rcx
+            mov r13, rax
+            add rax, rdi
 
 ;           for (short c = channels - 1; c >= 0; --c) {
             push rcx
             dec rcx
             .while signed rcx >= 0
 
-;               output[--output_index] = input[--input_index];
-                dec r13
+;               *(--output) = *(--part_input);
+                dec r8
                 dec rax
-                mov rdx, [rdi + r13]
-                mov [r8 + rax], rdx
+                mov rdx, [rax]
+                mov [r8], rdx
 
 ;           }
                 dec rcx
