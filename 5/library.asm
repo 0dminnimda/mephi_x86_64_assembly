@@ -41,8 +41,7 @@ macro function_save_stack
 
 macro function_load_stack
 {
-    mov rsp, rbp
-    pop rbp
+    leave
 }
 
 macro breakpoint
