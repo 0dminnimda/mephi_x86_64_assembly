@@ -10,7 +10,8 @@ process:  ; inout rdi: input, in rsi: width, in rdx: height, in rcx: channels, i
 
     function_save_stack
 
-    ; pushsd xmm1 xmm2 xmm3
+    std  ; all string operations in this function decrement
+
     push r12 r13 r14 r15
 
 ;   double x_ratio = (double)width / new_width;
@@ -51,26 +52,20 @@ process:  ; inout rdi: input, in rsi: width, in rdx: height, in rcx: channels, i
 ;           unsigned char *part_input = input + (input_y * width + input_x + 1) * channels;
             mov rax, r11
             mul rsi
-            lea rax, [rax + r12]
+            lea rax, [rax + r12 + 1]
             mul rcx
             mov r13, rax
             add rax, rdi
 
 ;           for (short c = channels - 1; c >= 0; --c) {
-            push rcx
-            dec rcx
-            .while signed rcx >= 0
-
 ;               *(--output) = *(--part_input);
-                dec r8
-                dec rax
-                mov rdx, [rax]
-                mov [r8], rdx
-
 ;           }
-                dec rcx
-            .endw
-            pop rcx
+            push rcx rsi rdi
+                mov rsi, rax
+                mov rdi, r8
+                rep movsb
+                mov r8, rdi
+            pop rdi rsi rcx
 
 ;       }
             dec r15
@@ -82,7 +77,6 @@ process:  ; inout rdi: input, in rsi: width, in rdx: height, in rcx: channels, i
         
 
     pop r15 r14 r13 r12
-    ; popsd xmm3 xmm2 xmm1
 
     function_load_stack
     ret
