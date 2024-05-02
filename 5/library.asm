@@ -215,16 +215,34 @@ macro jump_if_white_space char, target
     je target
 }
 
-macro pushsd reg
+macro pushsd regs*
 {
-    sub rsp, 8
-    movsd qword [rsp], reg
+    local count
+    count = 0
+
+    irps reg, regs
+    \{
+        count = count + 1
+        movsd qword [rsp - count * 8], reg
+    \}
+    if count > 0
+        sub rsp, count * 8
+    end if
 }
 
-macro popsd reg
+macro popsd regs*
 {
-    movsd reg, qword [rsp]
-    add rsp, 8
+    local count
+    count = 0
+
+    irps reg, regs
+    \{
+        count = count + 1
+        movsd reg, qword [rsp + count * 8]
+    \}
+    if count > 0
+        add rsp, count * 8
+    end if
 }
 
 macro FORMAT_ELF
