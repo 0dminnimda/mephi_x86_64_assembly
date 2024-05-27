@@ -48,15 +48,15 @@
 Отмасштабировать изображение до заданного размера, воспользовашись алгоритмом Nearest Neighbor. Для этого необходимо определить коэффициенты масштабирования по осям $x$ и $y$, а затем каждому пикселю нового изображения поставить в соответствие пиксель из старого:
 
 $$
-x\_ratio = \frac{width\_old}{width\_new}
+x_{ratio} = \frac{width_{old}}{width_{new}}
 $$
 
 $$
-y\_ratio = \frac{height\_old}{height\_new}
+y_{ratio} = \frac{height_{old}}{height_{new}}
 $$
 
 $$
-(x, y) \Leftrightarrow (floor(x * x\_ratio), floor(y * y\_ratio))
+(x, y) \Leftrightarrow (floor(x * x_{ratio}), floor(y * y_{ratio}))
 $$
 
 ### Формат входных и выходных данных
