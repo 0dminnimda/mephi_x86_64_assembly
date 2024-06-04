@@ -60,9 +60,9 @@ struct timespec time_it(process_fn func, int max_iter, unsigned char *src, unsig
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 10) {
+    if (argc < 10 || argc > 11) {
         printf("Usage: %s <input.png> <c_result.png> <c_sse_result.png> <asm_result.png> "
-               "<asm_sse_result.png> <x1_new> <y1_new> <x2_new> <y2_new>\n", argv[0]);
+               "<asm_sse_result.png> <x1_new> <y1_new> <x2_new> <y2_new> [<iterations>]\n", argv[0]);
         return 1;
     }
 
@@ -117,7 +117,11 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    const int max_iter = 15000;
+    int max_iter = 80000;
+    if (argc >= 11) {
+        max_iter = atoi(argv[10]);
+    }
+
     printf("timing with %d iterations:\n", max_iter);
 
     struct timespec c_time = time_it(process_c, max_iter, old_image, new_image, original_width, x_offset, y_offset, width, height, channels);
