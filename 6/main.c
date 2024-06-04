@@ -86,19 +86,19 @@ int main(int argc, char *argv[]) {
     int x_offset = 0, width = 0;
     if (x1 >= x2) {
         width = x1 - x2;
-        x_offset = x1 - width;
+        x_offset = x2;
     } else {
         width = x2 - x1;
-        x_offset = x2 - width;
+        x_offset = x1;
     }
 
     int y_offset = 0, height = 0;
     if (y1 >= y2) {
         height = y1 - y2;
-        y_offset = y1 - height;
+        y_offset = y2;
     } else {
         height = y2 - y1;
-        y_offset = y2 - height;
+        y_offset = y1;
     }
 
     printf("Cropping from %d to %d+%d by x and from %d to %d+%d by y \n", x_offset, x_offset, width, y_offset, y_offset, height);
