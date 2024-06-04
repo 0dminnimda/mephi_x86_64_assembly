@@ -74,10 +74,10 @@ int main(int argc, char *argv[]) {
     }
     printf("Image loaded: %d*%d pixels, %d channels\n", original_width, original_height, channels);
 
-    int x1 = atoi(argv[5]);
-    int y1 = atoi(argv[6]);
-    int x2 = atoi(argv[7]);
-    int y2 = atoi(argv[8]);
+    int x1 = atoi(argv[6]);
+    int y1 = atoi(argv[7]);
+    int x2 = atoi(argv[8]);
+    int y2 = atoi(argv[9]);
     if ((x1 < 0) || (y1 < 0) || (x2 < 0) || (y2 < 0)) {
         fprintf(stderr, "Error: not correct cordinates\n");
         return 1;
