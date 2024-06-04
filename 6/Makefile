@@ -18,5 +18,31 @@ stb_image.h:
 stb_image_write.h:
 	curl -o stb_image_write.h -L $(STB_WRITE_URL)
 
+.PHONY: test
+test:
+	# burner, to warmed up cache
+	./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 1279 959 3000 > /dev/null
+
+	./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 506 501 600 594 100000
+	./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 400 400 600 800 100000
+	./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 923 892 100000
+	./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 1279 959 100000
+
+	./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 203 301 283 412 100000
+	./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 400 400 600 800 100000
+	./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 701 1040 100000
+	./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 719 1279 100000
+
+	./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 203 301 283 412 100000
+	./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 300 300 400 500 100000
+	./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 400 450 100000
+	./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 511 511 100000
+
+	./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 1 183 112 100000
+	./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 100 100 150 200 100000
+	./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 200 200 100000
+	./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 255 255 100000
+
+
 clean:
 	rm main.out stb_image.h stb_image_write.h
