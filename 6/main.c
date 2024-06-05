@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
         max_iter = atoi(argv[10]);
     }
 
-    printf("timing with %d iterations:\n", max_iter);
+    printf("timing with %d iterations\n", max_iter);
 
     struct timespec c_time = time_it(process_c, max_iter, old_image, new_image, original_width, x_offset, y_offset, width, height, channels);
     if (stbi_write_png(argv[2], width, height, channels, new_image, width * channels) == 0)
