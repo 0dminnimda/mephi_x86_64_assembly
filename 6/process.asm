@@ -19,7 +19,6 @@ global  FUNC
 FUNC:
     mov r10, [rsp + 8]  ; r10 - height
 
-    push r12
 %ifdef  SSE
     push r13
     push r14
@@ -29,7 +28,7 @@ FUNC:
     ; rax = (original_width * y_offset + x_offset);
     push rdx
         mov rax, rdx
-        mul r8
+        mul r8  ; last use as y_offset
         add rax, rcx
     pop rcx  ; rcx = original_width
     ; src += rax * 4;
@@ -38,14 +37,12 @@ FUNC:
 %ifdef  SSE
     ; int width_div = width / 4;
     ; int width_mod = width % 4;
-    push rcx
-        mov rdx, 0
-        mov rax, r9
-        mov rcx, 4
-        div rcx
-        mov r13, rax ; width_div = width / 4;
-        mov r14, rdx ; width_mod = width % 4;
-    pop rcx
+    mov rdx, 0
+    mov rax, r9
+    mov r8, 4
+    div r8
+    mov r13, rax ; width_div = width / 4;
+    mov r14, rdx ; width_mod = width % 4;
 %endif
 
     ; for (int i = height; i != 0; --i)
@@ -62,11 +59,11 @@ FUNC:
 %ifdef  SSE
 
         ; for (int j = width_div; j != 0; --j)
-        mov r12, r13
+        mov r8, r13
 
         ; {
 .loop2:
-            test r12, r12
+            test r8, r8
             jz .loop2_end
 
             ; _mm_storeu_si128((__m128i*)dst, _mm_loadu_si128((__m128i*)src));
@@ -80,16 +77,16 @@ FUNC:
             add rdi, 16
 
         ; }
-            dec r12
+            dec r8
             jmp .loop2
 .loop2_end:
 
         ; for (int j = width_mod; j != 0; --j)
-        mov r12, r14
+        mov r8, r14
 
         ; {
 .loop3:
-            test r12, r12
+            test r8, r8
             jz .loop3_end
 
             ; *((uint32_t *)dst) = *((uint32_t *)src);
@@ -103,18 +100,18 @@ FUNC:
             add rdi, 4
 
         ; }
-            dec r12
+            dec r8
             jmp .loop3
 .loop3_end:
 
 %else
 
         ; for (int j = width; j != 0; --j)
-        mov r12, r9
+        mov r8, r9
 
         ; {
 .loop2:
-            test r12, r12
+            test r8, r8
             jz .loop2_end
 
             ; *((uint32_t *)dst) = *((uint32_t *)src);
@@ -128,7 +125,7 @@ FUNC:
             add rdi, 4
 
         ; }
-            dec r12
+            dec r8
             jmp .loop2
 .loop2_end:
 
@@ -147,6 +144,5 @@ FUNC:
     pop r14
     pop r13
 %endif
-    pop r12
 
     ret
