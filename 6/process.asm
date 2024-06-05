@@ -26,10 +26,18 @@ FUNC:
 %endif
     push r15
 
+    ; rax = (original_width * y_offset + x_offset);
+    push rdx
+        mov rax, rdx
+        mul r8
+        add rax, rcx
+    pop rcx  ; rcx = original_width
+    ; src += rax * 4;
+    lea rdi, [rdi + rax * 4]
+
 %ifdef  SSE
     ; int width_div = width / 4;
     ; int width_mod = width % 4;
-    push rdx
     push rcx
         mov rdx, 0
         mov rax, r9
@@ -38,17 +46,7 @@ FUNC:
         mov r13, rax ; width_div = width / 4;
         mov r14, rdx ; width_mod = width % 4;
     pop rcx
-    pop rdx
 %endif
-
-    ; rax = (original_width * y_offset + x_offset);
-    mov rax, rdx
-    push rdx
-        mul r8
-    pop rdx
-    add rax, rcx
-    ; src += rax * 4;
-    lea rdi, [rdi + rax * 4]
 
     ; for (int i = height; i != 0; --i)
     mov r11, r10
@@ -137,7 +135,7 @@ FUNC:
 %endif
 
         ; src = src_prev + original_width * 4;
-        lea rdi, [r15 + rdx * 4]
+        lea rdi, [r15 + rcx * 4]
 
     ; }
         dec r11
