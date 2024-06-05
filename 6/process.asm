@@ -17,7 +17,7 @@ section .text
 
 global  FUNC
 FUNC:
-    mov r10, [rsp + 8]  ; r10 - height
+    mov r10, [rsp + 8]  ; r10 = height
 
     push r15
 
@@ -33,7 +33,7 @@ FUNC:
 %ifdef  SSE
     ; int width_div = width / 4;
     ; int width_mod = width % 4;
-    mov rdx, 0
+    xor rdx, rdx
     mov rax, r9
     mov r8, 4
     div r8
