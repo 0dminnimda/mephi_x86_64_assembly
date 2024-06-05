@@ -6,6 +6,8 @@ void process_c(
     unsigned char *src, unsigned char *dst, int original_width, int x_offset, int y_offset, int width, int height
 ) {
     src += (original_width * y_offset + x_offset) * 4;
+    original_width *= 4;
+
     for (int i = height; i != 0; --i) {
         unsigned char *src_prev = src;
         for (int j = width; j != 0; --j) {
@@ -13,7 +15,7 @@ void process_c(
             dst += 4;
             src += 4;
         }
-        src = src_prev + original_width * 4;
+        src = src_prev + original_width;
     }
 }
 
@@ -23,6 +25,7 @@ void process_c(
 
 void process_c_sse(unsigned char *src, unsigned char *dst, int original_width, int x_offset, int y_offset, int width, int height) {
     src += (original_width * y_offset + x_offset) * 4;
+    original_width *= 4;
 
     int width_div = width / 4;
     int width_mod = width % 4;
@@ -38,7 +41,7 @@ void process_c_sse(unsigned char *src, unsigned char *dst, int original_width, i
             dst += 4;
             src += 4;
         }
-        src = src_prev + original_width * 4;
+        src = src_prev + original_width;
     }
 }
 #endif

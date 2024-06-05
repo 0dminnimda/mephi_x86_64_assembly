@@ -30,6 +30,9 @@ FUNC:
     ; src += rax * 4;
     lea rdi, [rdi + rax * 4]
 
+    ; original_width *= 4;
+    shl rcx, 2
+
 %ifdef  SSE
     ; int width_div = width / 4;
     ; int width_mod = width % 4;
@@ -127,8 +130,8 @@ FUNC:
 
 %endif
 
-        ; src = src_prev + original_width * 4;
-        lea rdi, [r15 + rcx * 4]
+        ; src = src_prev + original_width;
+        lea rdi, [r15 + rcx]
 
     ; }
         dec r11
