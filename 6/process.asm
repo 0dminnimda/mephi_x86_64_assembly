@@ -19,9 +19,6 @@ global  FUNC
 FUNC:
     mov r10, [rsp + 8]  ; r10 - height
 
-%ifdef  SSE
-    push r13
-%endif
     push r15
 
     ; rax = (original_width * y_offset + x_offset);
@@ -40,7 +37,7 @@ FUNC:
     mov rax, r9
     mov r8, 4
     div r8
-    mov r13, rax ; width_div = width / 4;
+    mov r9, rax ; width_div = width / 4;
     ; rdx = width_mod = width % 4;
 %endif
 
@@ -58,7 +55,7 @@ FUNC:
 %ifdef  SSE
 
         ; for (int j = width_div; j != 0; --j)
-        mov r8, r13
+        mov r8, r9
 
         ; {
 .loop2:
@@ -139,8 +136,5 @@ FUNC:
 .loop1_end:
 
     pop r15
-%ifdef  SSE
-    pop r13
-%endif
 
     ret
