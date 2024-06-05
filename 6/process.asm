@@ -47,10 +47,8 @@ FUNC:
         mul r8
     pop rdx
     add rax, rcx
-    ; rax *= 4
-    lea rax, [rax * 4]
-    ; src += rax;
-    add rdi, rax
+    ; src += rax * 4;
+    lea rdi, [rdi + rax * 4]
 
     ; for (int i = height; i != 0; --i)
     mov r11, r10
