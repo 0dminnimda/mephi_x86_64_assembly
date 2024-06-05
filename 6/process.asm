@@ -21,7 +21,6 @@ FUNC:
 
 %ifdef  SSE
     push r13
-    push r14
 %endif
     push r15
 
@@ -42,7 +41,7 @@ FUNC:
     mov r8, 4
     div r8
     mov r13, rax ; width_div = width / 4;
-    mov r14, rdx ; width_mod = width % 4;
+    ; rdx = width_mod = width % 4;
 %endif
 
     ; for (int i = height; i != 0; --i)
@@ -82,7 +81,7 @@ FUNC:
 .loop2_end:
 
         ; for (int j = width_mod; j != 0; --j)
-        mov r8, r14
+        mov r8, rdx
 
         ; {
 .loop3:
@@ -141,7 +140,6 @@ FUNC:
 
     pop r15
 %ifdef  SSE
-    pop r14
     pop r13
 %endif
 
