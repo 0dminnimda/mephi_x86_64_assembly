@@ -84,13 +84,13 @@ FUNC:
             jmp .loop2
 .loop2_end:
 
-        ; for (int j = 0; j < width_mod; j++)
-        xor r12, r12
+        ; for (int j = width_mod; j != 0; --j)
+        mov r12, r14
 
         ; {
 .loop3:
-            cmp r12, r14
-            jge .loop3_end
+            test r12, r12
+            jz .loop3_end
 
             ; *((uint32_t *)dst) = *((uint32_t *)src);
             mov eax, dword [rdi]
@@ -103,7 +103,7 @@ FUNC:
             add rdi, 4
 
         ; }
-            inc r12
+            dec r12
             jmp .loop3
 .loop3_end:
 
