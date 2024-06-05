@@ -109,13 +109,13 @@ FUNC:
 
 %else
 
-        ; for (int j = 0; j < width; j++)
-        xor r12, r12
+        ; for (int j = width; j != 0; --j)
+        mov r12, r9
 
         ; {
 .loop2:
-            cmp r12, r9
-            jge .loop2_end
+            test r12, r12
+            jz .loop2_end
 
             ; *((uint32_t *)dst) = *((uint32_t *)src);
             mov eax, dword [rdi]
@@ -128,7 +128,7 @@ FUNC:
             add rdi, 4
 
         ; }
-            inc r12
+            dec r12
             jmp .loop2
 .loop2_end:
 
