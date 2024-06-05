@@ -19,20 +19,11 @@ global  FUNC
 FUNC:
     mov r10, [rsp + 8]  ; r10 - height
 
-    push rdi
-    push rsi
-    push rdx
-    push rcx
-    push r8
-    push r9
-    push r10
-    push r11
     push r12
 %ifdef  SSE
     push r13
     push r14
 %endif
-    push rax
 
 %ifdef  SSE
     ; int width_div = width / 4;
@@ -156,19 +147,10 @@ FUNC:
         jmp .loop1
 .loop1_end:
 
-    pop rax
 %ifdef  SSE
     pop r14
     pop r13
 %endif
     pop r12
-    pop r11
-    pop r10
-    pop r9
-    pop r8
-    pop rcx
-    pop rdx
-    pop rsi
-    pop rdi
 
     ret
