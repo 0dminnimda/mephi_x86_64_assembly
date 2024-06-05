@@ -24,6 +24,7 @@ FUNC:
     push r13
     push r14
 %endif
+    push r15
 
 %ifdef  SSE
     ; int width_div = width / 4;
@@ -58,6 +59,9 @@ FUNC:
 .loop1:
         test r11, r11
         jz .loop1_end
+
+        ; unsigned char *src_prev = src;
+        mov r15, rdi
 
 %ifdef  SSE
 
@@ -134,19 +138,15 @@ FUNC:
 
 %endif
 
-        ; src -= width * 4;
-        lea rax, [r9 * 4]
-        sub rdi, rax
-
-        ; src += original_width * 4;
-        lea rax, [rdx * 4]
-        add rdi, rax
+        ; src = src_prev + original_width * 4;
+        lea rdi, [r15 + rdx * 4]
 
     ; }
         dec r11
         jmp .loop1
 .loop1_end:
 
+    pop r15
 %ifdef  SSE
     pop r14
     pop r13
