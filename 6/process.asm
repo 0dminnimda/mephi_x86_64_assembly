@@ -51,13 +51,13 @@ FUNC:
     ; src += rax;
     add rdi, rax
 
-    ; for (int i = 0; i < height; i++)
-    xor r11, r11
+    ; for (int i = height; i != 0; --i)
+    mov r11, r10
 
     ; {
 .loop1:
-        cmp r11, r10
-        jge .loop1_end
+        test r11, r11
+        jz .loop1_end
 
 %ifdef  SSE
 
@@ -143,7 +143,7 @@ FUNC:
         add rdi, rax
 
     ; }
-        inc r11
+        dec r11
         jmp .loop1
 .loop1_end:
 
