@@ -1,0 +1,650 @@
+# burner, to warmed up cache
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 1279 959 10000 > /dev/null
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 506 501 600 594 500000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 506 to 506+94 by x and from 501 to 501+93 by y 
+timing with 500000 iterations
+c -O0: 13.291533900
+c sse -O0: 5.419300300
+asm: 3.896893200
+asm sse: 1.483114200
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 400 400 600 800 300000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 400 to 400+200 by x and from 400 to 400+400 by y 
+timing with 300000 iterations
+c -O0: 69.839362500
+c sse -O0: 28.681491100
+asm: 19.069190400
+asm sse: 8.625952800
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 923 892 100000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 103 to 103+820 by x and from 51 to 51+841 by y 
+timing with 100000 iterations
+c -O0: 214.213687300
+c sse -O0: 96.541918000
+asm: 68.366073400
+asm sse: 47.264376400
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 1279 959 70000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 1 to 1+1278 by x and from 1 to 1+958 by y 
+timing with 70000 iterations
+c -O0: 255.524102400
+c sse -O0: 135.650987100
+asm: 89.038306300
+asm sse: 76.906125200
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 203 301 283 412 500000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 203 to 203+80 by x and from 301 to 301+111 by y 
+timing with 500000 iterations
+c -O0: 16.573703200
+c sse -O0: 6.512096200
+asm: 5.087681400
+asm sse: 1.999571600
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 400 400 600 800 300000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 400 to 400+200 by x and from 400 to 400+400 by y 
+timing with 300000 iterations
+c -O0: 78.023444600
+c sse -O0: 29.717127900
+asm: 19.867190400
+asm sse: 8.808266600
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 701 1040 200000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 103 to 103+598 by x and from 51 to 51+989 by y 
+timing with 200000 iterations
+c -O0: 344.974563200
+c sse -O0: 146.108173800
+asm: 98.976828700
+asm sse: 60.702469300
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 719 1279 100000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 1 to 1+718 by x and from 1 to 1+1278 by y 
+timing with 100000 iterations
+c -O0: 273.414962300
+c sse -O0: 126.550111500
+asm: 84.727054500
+asm sse: 63.836364800
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 203 301 283 412 1000000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 203 to 203+80 by x and from 301 to 301+111 by y 
+timing with 1000000 iterations
+c -O0: 29.378130900
+c sse -O0: 10.983944600
+asm: 9.124284400
+asm sse: 3.156160900
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 300 300 400 500 700000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 300 to 300+100 by x and from 300 to 300+200 by y 
+timing with 700000 iterations
+c -O0: 43.833944100
+c sse -O0: 17.597525400
+asm: 12.875272300
+asm sse: 5.401266000
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 400 450 500000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 103 to 103+297 by x and from 51 to 51+399 by y 
+timing with 500000 iterations
+c -O0: 173.394313600
+c sse -O0: 72.583662300
+asm: 45.123720200
+asm sse: 21.919446000
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 511 511 400000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 1 to 1+510 by x and from 1 to 1+510 by y 
+timing with 400000 iterations
+c -O0: 305.932949200
+c sse -O0: 130.624278500
+asm: 75.863975900
+asm sse: 34.378709600
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 1 183 112 3000000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 103 to 103+80 by x and from 1 to 1+111 by y 
+timing with 3000000 iterations
+c -O0: 82.694445200
+c sse -O0: 30.802981000
+asm: 24.718211000
+asm sse: 8.408667800
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 100 100 150 200 2000000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 100 to 100+50 by x and from 100 to 100+100 by y 
+timing with 2000000 iterations
+c -O0: 32.277557100
+c sse -O0: 12.679818500
+asm: 9.530896100
+asm sse: 4.146522600
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 200 200 1000000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 103 to 103+97 by x and from 51 to 51+149 by y 
+timing with 1000000 iterations
+c -O0: 44.126746900
+c sse -O0: 17.073770000
+asm: 12.800050400
+asm sse: 4.651548900
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 255 255 700000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 1 to 1+254 by x and from 1 to 1+254 by y 
+timing with 700000 iterations
+c -O0: 131.743913800
+c sse -O0: 55.095523300
+asm: 34.850032400
+asm sse: 15.099980000
+# burner, to warmed up cache
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 1279 959 10000 > /dev/null
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 506 501 600 594 500000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 506 to 506+94 by x and from 501 to 501+93 by y 
+timing with 500000 iterations
+c -O1: 4.048969000
+c sse -O1: 1.472028500
+asm: 4.227016100
+asm sse: 1.487219500
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 400 400 600 800 300000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 400 to 400+200 by x and from 400 to 400+400 by y 
+timing with 300000 iterations
+c -O1: 16.633595000
+c sse -O1: 8.423533700
+asm: 19.323431100
+asm sse: 8.814098000
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 923 892 100000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 103 to 103+820 by x and from 51 to 51+841 by y 
+timing with 100000 iterations
+c -O1: 62.637195700
+c sse -O1: 44.717591100
+asm: 68.133366700
+asm sse: 46.625824900
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 1279 959 70000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 1 to 1+1278 by x and from 1 to 1+958 by y 
+timing with 70000 iterations
+c -O1: 79.879012000
+c sse -O1: 73.407491100
+asm: 80.741935500
+asm sse: 65.740717700
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 203 301 283 412 500000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 203 to 203+80 by x and from 301 to 301+111 by y 
+timing with 500000 iterations
+c -O1: 3.793758300
+c sse -O1: 1.343921300
+asm: 4.390586900
+asm sse: 1.539624500
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 400 400 600 800 300000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 400 to 400+200 by x and from 400 to 400+400 by y 
+timing with 300000 iterations
+c -O1: 16.621378200
+c sse -O1: 8.239726000
+asm: 19.201932800
+asm sse: 9.300313700
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 701 1040 100000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 103 to 103+598 by x and from 51 to 51+989 by y 
+timing with 100000 iterations
+c -O1: 43.072257200
+c sse -O1: 27.728171000
+asm: 49.883413800
+asm sse: 31.655276500
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 719 1279 50000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 1 to 1+718 by x and from 1 to 1+1278 by y 
+timing with 50000 iterations
+c -O1: 36.949712200
+c sse -O1: 29.474496300
+asm: 40.932338500
+asm sse: 33.023856500
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 203 301 283 412 1000000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 203 to 203+80 by x and from 301 to 301+111 by y 
+timing with 1000000 iterations
+c -O1: 7.903555500
+c sse -O1: 2.960330100
+asm: 9.096024700
+asm sse: 3.366588300
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 300 300 400 500 700000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 300 to 300+100 by x and from 300 to 300+200 by y 
+timing with 700000 iterations
+c -O1: 10.299234300
+c sse -O1: 4.511285900
+asm: 12.380810000
+asm sse: 4.830464800
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 400 450 400000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 103 to 103+297 by x and from 51 to 51+399 by y 
+timing with 400000 iterations
+c -O1: 29.393601500
+c sse -O1: 16.126041600
+asm: 36.315662600
+asm sse: 17.287249300
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 511 511 200000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 1 to 1+510 by x and from 1 to 1+510 by y 
+timing with 200000 iterations
+c -O1: 31.368752700
+c sse -O1: 16.643540900
+asm: 39.425742100
+asm sse: 17.947977200
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 1 183 112 2000000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 103 to 103+80 by x and from 1 to 1+111 by y 
+timing with 2000000 iterations
+c -O1: 14.416221300
+c sse -O1: 5.826760700
+asm: 18.539212500
+asm sse: 5.866226200
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 100 100 150 200 2000000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 100 to 100+50 by x and from 100 to 100+100 by y 
+timing with 2000000 iterations
+c -O1: 10.385296200
+c sse -O1: 3.209581200
+asm: 9.641329700
+asm sse: 4.127503600
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 200 200 1000000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 103 to 103+97 by x and from 51 to 51+149 by y 
+timing with 1000000 iterations
+c -O1: 10.542720900
+c sse -O1: 4.152817100
+asm: 13.030047500
+asm sse: 4.585598700
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 255 255 700000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 1 to 1+254 by x and from 1 to 1+254 by y 
+timing with 700000 iterations
+c -O1: 30.230118700
+c sse -O1: 14.696879200
+asm: 33.907246400
+asm sse: 14.914641600
+# burner, to warmed up cache
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 1279 959 10000 > /dev/null
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 506 501 600 594 500000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 506 to 506+94 by x and from 501 to 501+93 by y 
+timing with 500000 iterations
+c -O2: 1.563587700
+c sse -O2: 1.389297700
+asm: 4.409313100
+asm sse: 1.631228400
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 400 400 600 800 300000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 400 to 400+200 by x and from 400 to 400+400 by y 
+timing with 300000 iterations
+c -O2: 9.027706400
+c sse -O2: 9.037953600
+asm: 21.640800500
+asm sse: 9.080803600
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 923 892 100000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 103 to 103+820 by x and from 51 to 51+841 by y 
+timing with 100000 iterations
+c -O2: 41.050522300
+c sse -O2: 39.560972500
+asm: 66.269163000
+asm sse: 41.192734700
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 1279 959 70000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 1 to 1+1278 by x and from 1 to 1+958 by y 
+timing with 70000 iterations
+c -O2: 77.684193400
+c sse -O2: 73.116348700
+asm: 81.070937400
+asm sse: 75.447674200
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 203 301 283 412 500000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 203 to 203+80 by x and from 301 to 301+111 by y 
+timing with 500000 iterations
+c -O2: 1.443855200
+c sse -O2: 1.404683500
+asm: 4.633404400
+asm sse: 1.476321600
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 400 400 600 800 300000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 400 to 400+200 by x and from 400 to 400+400 by y 
+timing with 300000 iterations
+c -O2: 8.471887500
+c sse -O2: 8.391322700
+asm: 19.942256000
+asm sse: 8.987238100
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 701 1040 100000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 103 to 103+598 by x and from 51 to 51+989 by y 
+timing with 100000 iterations
+c -O2: 28.790927300
+c sse -O2: 29.053723800
+asm: 54.252487900
+asm sse: 31.185932200
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 719 1279 50000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 1 to 1+718 by x and from 1 to 1+1278 by y 
+timing with 50000 iterations
+c -O2: 29.936241600
+c sse -O2: 31.156249700
+asm: 43.080984700
+asm sse: 31.225274100
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 203 301 283 412 1000000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 203 to 203+80 by x and from 301 to 301+111 by y 
+timing with 1000000 iterations
+c -O2: 3.069501800
+c sse -O2: 2.894123500
+asm: 8.997302100
+asm sse: 3.259965100
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 300 300 400 500 700000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 300 to 300+100 by x and from 300 to 300+200 by y 
+timing with 700000 iterations
+c -O2: 4.830436000
+c sse -O2: 4.492478600
+asm: 12.948770500
+asm sse: 5.274769700
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 400 450 400000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 103 to 103+297 by x and from 51 to 51+399 by y 
+timing with 400000 iterations
+c -O2: 17.119329600
+c sse -O2: 18.134103100
+asm: 37.484574600
+asm sse: 17.460035600
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 511 511 200000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 1 to 1+510 by x and from 1 to 1+510 by y 
+timing with 200000 iterations
+c -O2: 16.848332300
+c sse -O2: 17.401469900
+asm: 39.923376200
+asm sse: 17.387187800
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 1 183 112 2000000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 103 to 103+80 by x and from 1 to 1+111 by y 
+timing with 2000000 iterations
+c -O2: 5.102741000
+c sse -O2: 5.099099500
+asm: 17.349841900
+asm sse: 5.513605300
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 100 100 150 200 2000000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 100 to 100+50 by x and from 100 to 100+100 by y 
+timing with 2000000 iterations
+c -O2: 3.492345400
+c sse -O2: 3.443511200
+asm: 9.638095700
+asm sse: 4.252053900
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 200 200 1000000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 103 to 103+97 by x and from 51 to 51+149 by y 
+timing with 1000000 iterations
+c -O2: 4.079454300
+c sse -O2: 3.945265900
+asm: 13.065581900
+asm sse: 4.427699200
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 255 255 700000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 1 to 1+254 by x and from 1 to 1+254 by y 
+timing with 700000 iterations
+c -O2: 14.436756500
+c sse -O2: 14.751692700
+asm: 35.212772800
+asm sse: 14.961092600
+# burner, to warmed up cache
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 1279 959 10000 > /dev/null
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 506 501 600 594 600000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 506 to 506+94 by x and from 501 to 501+93 by y 
+timing with 600000 iterations
+c -O3: 2.028624700
+c sse -O3: 1.763537500
+asm: 4.989805000
+asm sse: 1.992158300
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 400 400 600 800 300000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 400 to 400+200 by x and from 400 to 400+400 by y 
+timing with 300000 iterations
+c -O3: 8.127565600
+c sse -O3: 8.227996200
+asm: 19.107560500
+asm sse: 9.444070300
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 923 892 100000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 103 to 103+820 by x and from 51 to 51+841 by y 
+timing with 100000 iterations
+c -O3: 39.213192800
+c sse -O3: 37.007217800
+asm: 61.598595000
+asm sse: 40.875053100
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 1279 959 70000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 1 to 1+1278 by x and from 1 to 1+958 by y 
+timing with 70000 iterations
+c -O3: 71.497254400
+c sse -O3: 64.191148800
+asm: 75.203156500
+asm sse: 63.398062500
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 203 301 283 412 600000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 203 to 203+80 by x and from 301 to 301+111 by y 
+timing with 600000 iterations
+c -O3: 1.642531500
+c sse -O3: 1.586314700
+asm: 5.109771600
+asm sse: 1.748157100
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 400 400 600 800 300000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 400 to 400+200 by x and from 400 to 400+400 by y 
+timing with 300000 iterations
+c -O3: 8.177227700
+c sse -O3: 8.158316600
+asm: 19.831159700
+asm sse: 8.948817900
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 701 1040 100000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 103 to 103+598 by x and from 51 to 51+989 by y 
+timing with 100000 iterations
+c -O3: 25.914929100
+c sse -O3: 26.407002600
+asm: 48.763511400
+asm sse: 28.424799100
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 719 1279 50000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 1 to 1+718 by x and from 1 to 1+1278 by y 
+timing with 50000 iterations
+c -O3: 26.568090600
+c sse -O3: 26.408862900
+asm: 38.154767100
+asm sse: 27.925961200
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 203 301 283 412 1000000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 203 to 203+80 by x and from 301 to 301+111 by y 
+timing with 1000000 iterations
+c -O3: 2.742116700
+c sse -O3: 2.654847400
+asm: 8.766770600
+asm sse: 3.117900500
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 300 300 400 500 700000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 300 to 300+100 by x and from 300 to 300+200 by y 
+timing with 700000 iterations
+c -O3: 4.693385300
+c sse -O3: 4.374367500
+asm: 12.337451700
+asm sse: 4.787132200
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 400 450 400000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 103 to 103+297 by x and from 51 to 51+399 by y 
+timing with 400000 iterations
+c -O3: 16.034922200
+c sse -O3: 17.410040000
+asm: 35.587381300
+asm sse: 17.006419400
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 511 511 200000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 1 to 1+510 by x and from 1 to 1+510 by y 
+timing with 200000 iterations
+c -O3: 16.654149800
+c sse -O3: 16.928699600
+asm: 38.912385000
+asm sse: 16.793532500
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 1 183 112 2000000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 103 to 103+80 by x and from 1 to 1+111 by y 
+timing with 2000000 iterations
+c -O3: 5.022721600
+c sse -O3: 4.931678600
+asm: 16.465970800
+asm sse: 5.506477500
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 100 100 150 200 2000000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 100 to 100+50 by x and from 100 to 100+100 by y 
+timing with 2000000 iterations
+c -O3: 3.232828300
+c sse -O3: 3.152448700
+asm: 9.320241000
+asm sse: 4.157907700
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 200 200 1000000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 103 to 103+97 by x and from 51 to 51+149 by y 
+timing with 1000000 iterations
+c -O3: 4.220890900
+c sse -O3: 4.124480900
+asm: 13.645746400
+asm sse: 4.991361900
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 255 255 700000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 1 to 1+254 by x and from 1 to 1+254 by y 
+timing with 700000 iterations
+c -O3: 14.225327800
+c sse -O3: 14.548248200
+asm: 35.045672100
+asm sse: 14.817413700
+# burner, to warmed up cache
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 1279 959 10000 > /dev/null
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 506 501 600 594 600000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 506 to 506+94 by x and from 501 to 501+93 by y 
+timing with 600000 iterations
+c -Ofast: 1.843712100
+c sse -Ofast: 1.706039600
+asm: 4.815661200
+asm sse: 1.849606700
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 400 400 600 800 300000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 400 to 400+200 by x and from 400 to 400+400 by y 
+timing with 300000 iterations
+c -Ofast: 8.088798500
+c sse -Ofast: 8.122927800
+asm: 20.201885400
+asm sse: 8.800648800
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 923 892 100000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 103 to 103+820 by x and from 51 to 51+841 by y 
+timing with 100000 iterations
+c -Ofast: 36.763087300
+c sse -Ofast: 35.938082200
+asm: 61.955351400
+asm sse: 39.508285000
+./main.out resources/cat_wow.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 1279 959 70000
+Image loaded: 1280*960 pixels, 4 channels
+Cropping from 1 to 1+1278 by x and from 1 to 1+958 by y 
+timing with 70000 iterations
+c -Ofast: 63.531510400
+c sse -Ofast: 63.576770600
+asm: 74.387612300
+asm sse: 64.267677300
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 203 301 283 412 600000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 203 to 203+80 by x and from 301 to 301+111 by y 
+timing with 600000 iterations
+c -Ofast: 1.722214300
+c sse -Ofast: 1.592507800
+asm: 5.292783700
+asm sse: 1.767475800
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 400 400 600 800 300000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 400 to 400+200 by x and from 400 to 400+400 by y 
+timing with 300000 iterations
+c -Ofast: 8.354185800
+c sse -Ofast: 8.981599300
+asm: 19.452320700
+asm sse: 8.804943300
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 701 1040 100000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 103 to 103+598 by x and from 51 to 51+989 by y 
+timing with 100000 iterations
+c -Ofast: 28.029327100
+c sse -Ofast: 27.391909800
+asm: 50.465493500
+asm sse: 28.190082800
+./main.out resources/cat_yum.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 719 1279 50000
+Image loaded: 720*1280 pixels, 4 channels
+Cropping from 1 to 1+718 by x and from 1 to 1+1278 by y 
+timing with 50000 iterations
+c -Ofast: 26.063078700
+c sse -Ofast: 27.179489400
+asm: 38.054035900
+asm sse: 26.840162400
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 203 301 283 412 1000000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 203 to 203+80 by x and from 301 to 301+111 by y 
+timing with 1000000 iterations
+c -Ofast: 2.990975700
+c sse -Ofast: 2.752247900
+asm: 8.877530800
+asm sse: 3.189095700
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 300 300 400 500 700000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 300 to 300+100 by x and from 300 to 300+200 by y 
+timing with 700000 iterations
+c -Ofast: 4.604968800
+c sse -Ofast: 4.288663800
+asm: 12.296058100
+asm sse: 4.714596600
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 400 450 400000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 103 to 103+297 by x and from 51 to 51+399 by y 
+timing with 400000 iterations
+c -Ofast: 15.977792200
+c sse -Ofast: 16.074051200
+asm: 35.696618000
+asm sse: 17.700185700
+./main.out resources/boat.512.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 511 511 200000
+Image loaded: 512*512 pixels, 4 channels
+Cropping from 1 to 1+510 by x and from 1 to 1+510 by y 
+timing with 200000 iterations
+c -Ofast: 16.353466100
+c sse -Ofast: 16.089892400
+asm: 38.157780200
+asm sse: 20.225406800
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 1 183 112 2000000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 103 to 103+80 by x and from 1 to 1+111 by y 
+timing with 2000000 iterations
+c -Ofast: 5.940484400
+c sse -Ofast: 5.979312400
+asm: 17.013108500
+asm sse: 5.977104600
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 100 100 150 200 2000000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 100 to 100+50 by x and from 100 to 100+100 by y 
+timing with 2000000 iterations
+c -Ofast: 3.256504300
+c sse -Ofast: 3.181567300
+asm: 9.588470700
+asm sse: 4.112241600
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 103 51 200 200 1000000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 103 to 103+97 by x and from 51 to 51+149 by y 
+timing with 1000000 iterations
+c -Ofast: 4.034169700
+c sse -Ofast: 3.930816500
+asm: 12.995551700
+asm sse: 4.568674400
+./main.out resources/4.1.01.png output/c.png output/c_sse.png output/asm.png output/asm_sse.png 1 1 255 255 700000
+Image loaded: 256*256 pixels, 4 channels
+Cropping from 1 to 1+254 by x and from 1 to 1+254 by y 
+timing with 700000 iterations
+c -Ofast: 14.935648600
+c sse -Ofast: 14.330664600
+asm: 35.901130200
+asm sse: 15.881469700
