@@ -61,13 +61,13 @@ FUNC:
 
 %ifdef  SSE
 
-        ; for (int j = 0; j < width_div; j++)
-        xor r12, r12
+        ; for (int j = width_div; j != 0; --j)
+        mov r12, r13
 
         ; {
 .loop2:
-            cmp r12, r13
-            jge .loop2_end
+            test r12, r12
+            jz .loop2_end
 
             ; _mm_storeu_si128((__m128i*)dst, _mm_loadu_si128((__m128i*)src));
             movdqu xmm0, [rdi]
@@ -80,7 +80,7 @@ FUNC:
             add rdi, 16
 
         ; }
-            inc r12
+            dec r12
             jmp .loop2
 .loop2_end:
 
